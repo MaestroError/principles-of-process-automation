@@ -11,7 +11,7 @@ Context: solo operator · article-sharing posts · article URL in the first comm
 
 **Attach the linked article's own designated sharing image to the post.**
 
-Exists because placing the link in the first comment (to avoid the outbound-link reach penalty) suppresses LinkedIn's automatic preview card. This restores it.
+Restores the preview card suppressed by placing the link in the first comment.
 
 - **Scope:** article-share posts with the URL in the first comment. Out: original content, multi-article roundups, video, non-article destinations.
 - **Constraints:** use only the publisher's designated sharing image · never an image from a different article than the one linked · do not crop out watermarks, credits, or attribution · do not evade bot protection · do not upscale.
@@ -90,10 +90,10 @@ Excluded: generated image — outside this objective.
 
 | Condition | Response |
 |---|---|
-| 403 / bot detection | One retry with conventional UA. Still blocked → (c) or (d). Do not escalate evasion |
+| 403 / bot detection | One retry with conventional UA — **record the retry whether or not it succeeds**. Still blocked → (c) or (d). Do not escalate evasion |
 | Paywall or interstitial | Not the article → (c) or (d) |
 | No metadata in raw HTML | Render once headless, re-evaluate → (c) or (d) |
-| Image URL 404s or is a tracking pixel | Next tier |
+| Image URL 404s or is a tracking pixel | Next tier — **flag the fallthrough**, do not substitute silently |
 | Below minimum resolution | (d). Do not upscale |
 | Redirect lands on unexpected domain | **Hard stop, human review** |
 | Two URLs in the comment | Hard stop — ask which |

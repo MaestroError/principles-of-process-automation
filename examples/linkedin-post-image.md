@@ -75,14 +75,15 @@ Context: solo operator · organic text posts · any image type.
 
 **Variants:** the five routes above, in priority order.
 
-**Exceptions:**
+**Exceptions** — every fallback is announced, never silent:
 
-| Condition | Response |
-|---|---|
-| Rendered text garbled | Switch to route 3 with real typesetting — do not re-roll |
-| Won't render legibly at thumbnail | Downgrade to abstract / textural |
-| Generation quota exhausted | Route 1 or 5 |
-| Three attempts fail the bar | Route 5 |
+| Condition | Response | Announce |
+|---|---|---|
+| Rendered text garbled | Switch to route 3 with real typesetting — do not re-roll | Flag: route changed, reason |
+| Won't render legibly at thumbnail | Downgrade to abstract / textural | Flag: concept downgraded |
+| Generation quota exhausted | Route 1 or 5 | Flag: quota — recurring means stop relying on route 4 |
+| Three attempts fail the bar | Route 5 | Flag with the three rejected candidates |
+| Timebox expires | Route 5 | Flag: expired, not chosen |
 
 **Recovery / safe stop:** text-only publication. 15-minute timebox is a hard trigger, not a guideline.
 
@@ -94,7 +95,7 @@ Context: solo operator · organic text posts · any image type.
 
 ## Observation
 
-**Record per post:** archetype · route · candidate count · elapsed time · shipped with image or text-only · prompt used · tracking link ID.
+**Record per post:** archetype · **route requested and route actually used** · flags raised · candidate count · elapsed time · shipped with image or text-only · prompt used · tracking link ID.
 
 **Judge:**
 
@@ -116,3 +117,4 @@ Context: solo operator · organic text posts · any image type.
 - **Objects:** post text · core claim · archetype · route · prompt · candidates · final export · log record.
 - **Resources:** generation credits · operator attention · 15-minute budget · visual-constraint file.
 - **Failure domain:** routes 3 and 4 may share one generation API. Only routes 1 and 5 are independent.
+- **Support congruence:** tracked subscriptions reward what the "must not overstate" constraint forbids. Constraint wins — a post that converts by overselling is a failed run.

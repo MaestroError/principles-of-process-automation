@@ -127,8 +127,6 @@ The parent owns every failure that is not local to a single subprocess.
 
 **Revise:** subprocess instructions and libraries update from edit patterns — the parent routes improvement effort to whichever subprocess the operator corrects most.
 
-> Operator edits at review are the highest-value signal in the workflow: attributable, immediate, and per-subprocess. Unlike engagement, they require no inference.
-
 **External scan:** LinkedIn feed image spec and link-in-body penalty · publisher anti-bot posture · tracking service availability.
 
 ---
@@ -136,6 +134,7 @@ The parent owns every failure that is not local to a single subprocess.
 ## Invariants
 
 - **Ownership:** operator owns approval and the voice/style file. Every subprocess's instruction set and library exists as a file, not as memory.
+- **Support congruence:** edit distance rewards the reviewer for editing less. Read as a trend, never a target; pair with rejection rate and post-publication corrections. Edits falling while corrections rise = review decay, not improvement.
 - **Objects:** article URL · snapshot · post text · declared angle · claim list · image + provenance · tracked link · comment text · assembled draft · flag set · run log.
 - **Resources:** network · publisher's server · illustration source · tracking service · operator attention · ~10 min.
 - **Failure domains:** publisher server (gate, `01`, `02`-harvest) · illustration source (`02`-design) · tracking service (`03`) · LinkedIn (publish, comment). Four independent domains; only "save draft, publish nothing" depends on none of them.

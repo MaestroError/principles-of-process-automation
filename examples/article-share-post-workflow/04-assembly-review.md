@@ -24,8 +24,6 @@ This subprocess is the workflow's single human checkpoint and its escalation end
 - **Constraints:** never publish without explicit approval · every flag surfaced, never buried · **the image preview must render at actual feed thumbnail size**, not full size · the link must be shown by its resolved destination, not its tracking wrapper.
 - **Stop:** reject → save draft with reasons, publish nothing.
 
-> Previewing an image at full size lets the reviewer approve something that fails at the size the audience will actually see. The preview must show what the feed shows.
-
 ## Occurrence
 
 - **Trigger:** `01`, `02`, `03` have all returned — including soft-degraded returns.
@@ -44,13 +42,17 @@ This subprocess is the workflow's single human checkpoint and its escalation end
 | Capture edit diff by subprocess | 10 | 10 | 10 | 10 |
 | Publish, **then** post comment | — | 10 | 10 | 7 |
 
-**Fit checks, all mandatory before presenting:**
+**Fit checks, all mandatory before presenting.** Checks run at their point of origin; only cross-subprocess checks run here.
 
-1. Post text, image provenance, and comment link all refer to the same article.
-2. The comment does not repeat the hook.
-3. The link resolves to the article.
-4. The image renders legibly at thumbnail size.
-5. No link appears in the post body.
+| # | Check | Where it runs |
+|---|---|---|
+| 1 | Post text, image provenance, and comment link all refer to the same article | **Here** — spans three subprocesses |
+| 2 | The comment does not repeat the hook | At origin, in `03` · re-checked here after edits |
+| 3 | The link resolves to the article | At origin, in `03` · re-checked here after edits |
+| 4 | The image renders legibly at thumbnail size | At origin, in `02` · re-checked here only if the image changed |
+| 5 | No link appears in the post body | At origin, in `01` |
+
+**Flag summary** surfaces every degradation recorded by subprocesses — tier fallthroughs, retries, route switches, neutral-CTA fallbacks — not only failures.
 
 **Complete when:** published with its comment, or draft saved with reasons.
 
@@ -66,7 +68,7 @@ This subprocess is the workflow's single human checkpoint and its escalation end
 
 **Safe stop:** saved draft. No external dependency.
 
-**Manual exercise:** the level-1 approval here is the only human decision in the workflow and is deliberately not delegable. It is also what allows every subprocess to omit its own human checkpoint.
+**Manual exercise:** the level-1 approval is the workflow's only human decision. Not delegable.
 
 ## Observation
 

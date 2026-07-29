@@ -12,7 +12,7 @@ Two routes to one objective: **harvest** the publisher's designated image, or **
 | **Consumes** | Snapshot · article title · publication name · declared angle (design route only, from `01`) |
 | **Produces** | Image at feed spec + provenance record `{route, source}` — **or** explicit `none` |
 | **Escalates (hard)** | Nothing. This subprocess never halts the run |
-| **Degrades (soft)** | Returns `none` → parent assembles text-only, flagged |
+| **Degrades (soft)** | Returns `none` → parent assembles text-only, flagged · **any tier fallthrough, retry, or route switch is flagged, never silent** |
 
 ---
 
@@ -85,19 +85,19 @@ Two routes to one objective: **harvest** the publisher's designated image, or **
 
 | Condition | Response |
 |---|---|
-| Tier 1 image 404s or is a tracking pixel | Next tier |
+| Tier 1 image 404s or is a tracking pixel | Next tier — **flag the fallthrough** so `04` surfaces it; do not substitute silently |
 | All tiers fail | Route B |
 | Harvested image below minimum resolution | Route B — do not upscale |
-| 403 / bot detection **on the image host** | One retry with conventional UA, then Route B. Do not escalate evasion. (The article page itself was already validated at the parent gate; image assets often sit on a separate CDN that blocks independently) |
+| 403 / bot detection **on the image host** | One retry with conventional UA — **recorded whether or not it succeeds**, then Route B. Do not escalate evasion. (The article page itself was already validated at the parent gate; image assets often sit on a separate CDN that blocks independently) |
 | Design route: text renders incorrectly | Typographic-only card, no illustration |
 | Design route: illustration source unavailable | Typographic-only card |
 | Typographic card also fails | `none` |
 
 **Safe stop:** `none`. Always available, no external dependency.
 
-**Failure domains:** Route A depends on the publisher's server. Route B depends on the illustration source. **These are independent** — the reason Route B materially improves resilience rather than merely adding an option.
+**Failure domains:** Route A — publisher's server. Route B — illustration source. Independent.
 
-> No level-1 step in this subprocess. The parent's review at `04` is the human checkpoint; duplicating it here would ask the operator to approve the same image twice.
+**No level-1 step.** Human checkpoint is the parent's review at `04`.
 
 ---
 
@@ -113,7 +113,7 @@ Two routes to one objective: **harvest** the publisher's designated image, or **
 
 **Revise:** **per-domain override table** — which domains need a specific tier, which publish site-defaults as `og:image`, which route straight to B. This file is the accumulated intelligence of the subprocess.
 
-> Page rendering is *not* in this table. The parent performs the fetch and owns any headless-rendering decision at its gate; by contract this subprocess receives a snapshot that already parses.
+Page rendering is not in this table — the parent owns fetch and rendering at its gate.
 
 ## Invariants
 

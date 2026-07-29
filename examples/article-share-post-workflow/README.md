@@ -62,7 +62,7 @@ Every subprocess opens with four statements: what it may **assume**, what it **c
 
 The contract is where the parent's guarantees and the subprocess's assumptions are made to match. It is the interface.
 
-### 3. Every failure is classified hard or soft
+### 3. Every failure is classified hard or soft — and every degradation is announced
 
 - **Hard** — halts the run and returns to the human. *No supportable angle exists.*
 - **Soft** — the run continues, carrying a flag to review. *No image was found.*
@@ -71,11 +71,17 @@ This is the single most useful rule discovered here. Without it, every subproces
 
 Classification belongs to the parent, because only the parent knows what the output is for.
 
-### 4. The parent's review absorbs the subprocesses' human checkpoints
+There is a third category the first draft of these specs missed entirely: **quiet success**. A tier-3 image, a retry that worked, a neutral CTA after a failed regeneration — none of these are failures, and all of them produce output indistinguishable from a clean run. Bainbridge's warning applies directly: automation "can *camouflage* system failure by controlling against the variable changes, so that trends do not become apparent until they are beyond control." Every degradation is therefore recorded and surfaced at review, not just every failure. **Fail obviously, hand over gradually.**
 
-The general image spec in [`../linkedin-post-image.md`](../linkedin-post-image.md) has a level-1 human decision at its centre. Here, `02` has none — because `04` already puts the assembled draft in front of the operator.
+### 4. Human checkpoints move up; mechanical checks stay down
 
-**A subprocess needs its own human checkpoint only if the parent has none, or if the decision cannot wait for assembly.** Duplicating it asks the operator to approve the same image twice, which trains them to stop looking.
+Two rules that look contradictory and are not.
+
+**Human judgement consolidates at the parent.** The general image spec in [`../linkedin-post-image.md`](../linkedin-post-image.md) has a level-1 human decision at its centre. Here, `02` has none — because `04` already puts the assembled draft in front of the operator. A subprocess needs its own human checkpoint only if the parent has none, or if the decision cannot wait for assembly. Duplicating it asks the operator to approve the same image twice, which trains them to stop looking.
+
+**Mechanical checks stay at their point of origin.** Cherns's socio-technical criterion: variances should be controlled as near their origin as possible, because correcting them in a separate place long after the event makes "a long loop, which is a poor design for learning." So "does this image read at thumbnail size" is checked in `02`, not at review — only the genuinely cross-subprocess check (does everything refer to the same article?) belongs at `04`.
+
+The distinction is *judgement* versus *verification*. Consolidate the first, distribute the second.
 
 ### 5. Objectives nest, but are stated in what the subprocess controls
 
@@ -86,6 +92,17 @@ The parent's objective is an approved published post. `02`'s objective is not "a
 Each subprocess observes itself. The parent observes something none of them can: **operator edit distance at review, attributed to the originating subprocess.**
 
 That single metric routes all improvement effort — whichever subprocess the operator corrects most is where the next work goes. It is attributable, immediate, and requires no inference about engagement. It only exists because there is a parent with a review step; no subprocess could compute it alone.
+
+---
+
+### 7. Check whether the metric contradicts the constraint
+
+Cherns's *support congruence*: the systems of measurement and reward must reinforce the behaviour the structure is designed to elicit. Two contradictions surfaced here on review, neither visible while writing the specs:
+
+- `03` is measured on conversion and constrained against overselling — the metric rewards what the constraint forbids.
+- The parent is measured on **operator edit distance**, where low means the automation is working — and the operator is also the reviewer. The metric rewards the reviewer for editing less, which is exactly the rubber-stamping the level-1 checkpoint exists to prevent.
+
+Both are now named in the specs with the constraint held above the metric. A Five O specification can be complete and still be quietly defeated by what it chose to measure.
 
 ---
 

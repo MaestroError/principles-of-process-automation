@@ -20,6 +20,7 @@ Parent: [`00-main-workflow`](./00-main-workflow.md)
 
 - **Measured by:** click-through and tracked conversions per post, segmented by CTA phrasing.
 - **Constraints:** exactly one link · must not restate the hook · must not promise more than the article delivers · destination shown must be the destination reached — no misleading link text · comment fits without truncation.
+- **Support congruence:** conversion rewards what the "must not oversell" constraint forbids. Constraint wins — a high-converting CTA that oversells is retired from the library, not promoted.
 - **Stop:** degrade to a bare link with a minimal CTA. Never omit the link.
 
 ## Occurrence
@@ -47,7 +48,7 @@ Parent: [`00-main-workflow`](./00-main-workflow.md)
 |---|---|
 | Tracking service unreachable | **Raw URL + flag.** Do not delay publish for measurement |
 | Tracked link resolves anywhere but the article | Discard the wrapper, use the raw URL, flag |
-| Draft repeats the hook | Regenerate once, then fall back to the library's neutral CTA |
+| Draft repeats the hook | Regenerate once, then fall back to the library's neutral CTA — **flagged** |
 | CTA library unavailable | Minimal CTA: one line plus the link |
 
 **Safe stop:** bare link, no CTA copy. The link is the non-negotiable element; the copy is not.
