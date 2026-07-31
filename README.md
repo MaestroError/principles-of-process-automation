@@ -56,6 +56,7 @@ The **prompt** skill writes and audits agent prompts. It checks what your agent 
 **Claude Code** — copy into your skills directory:
 
 ```bash
+# Git clone or just download zip from github
 git clone https://github.com/MaestroError/principles-of-process-automation.git
 cp -r principles-of-process-automation/skills/5o-* ~/.claude/skills/
 ```
@@ -79,8 +80,6 @@ Use `.claude/skills/` inside a project instead if you only want them there. Rest
 **[PRINCIPLES.md](./PRINCIPLES.md)** — the same framework at length, with its sources. Every claim is traced to the literature it came from: control theory, cybernetics, business process management, workflow formalisation, human factors, socio-technical design. Every reference is linked, and most are freely readable. Read this if you want to know *why* a principle holds, argue with it properly, or take it somewhere academic.
 
 **[draft.md](./draft.md)** — the original one-page sketch this grew from. Kept for the record.
-
-**`examples/` and `cases/`** — worked specifications and notes from developing the framework. **Not ready to use** and not documented yet; look if you are curious, but do not treat them as guidance.
 
 ---
 
