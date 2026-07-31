@@ -1,0 +1,90 @@
+{
+  "skill_name": "5o-automation-prompt",
+  "evals": [
+    {
+      "id": 0,
+      "name": "audit-weak-support-prompt",
+      "prompt": "Our support agent keeps promising things it shouldn't and sometimes just makes up policy details. Here's the prompt - can you review it and tell me what's wrong?",
+      "expected_output": "Audit mode. Traces each symptom to a missing dimension, notices there is no escalation tool so 'hand to a human' is not executable, and delivers a revised prompt plus a coverage table.",
+      "assertions": [
+        "Traces 'makes up policy details' to a missing stop condition, quoting the offending line",
+        "Traces 'promises things it shouldn't' to a missing autonomy boundary on tools",
+        "Identifies the direct conflict between 'be accurate' and 'always fully resolve in a single reply'",
+        "Notices there is NO escalation tool, so 'hand to a human' is not executable",
+        "Flags apply_credit as gated only by 'use your judgement'",
+        "Identifies that the prompt describes one input shape while the inbox contains many",
+        "Delivers a coverage table naming real remaining gaps",
+        "Revised prompt is NOT organised into five sections named after the dimensions"
+      ],
+      "files": ["evals/fixtures/weak-agent-prompt.md"]
+    },
+    {
+      "id": 1,
+      "name": "write-prompt-from-spec",
+      "prompt": "We've got the spec signed off for our security questionnaire drafting agent. Can you write the system prompt for it?",
+      "expected_output": "Write mode from a complete spec. Should re-run the variety check at the question level rather than inheriting the spec's questionnaire-level enumeration, and treat the spec's silences as unasked.",
+      "assertions": [
+        "Prompt gives explicit permission to produce 'no source found' rather than inferring",
+        "Prompt states which wins when accuracy and coverage conflict",
+        "Prompt handles the named-incident questionnaire as a scope gate before drafting",
+        "Re-runs the variety check at the unit the agent processes, not the unit the spec enumerated",
+        "Covers input staleness and mid-run tool failure despite the spec being silent on both",
+        "Prompt requires the agent to report when it used an adjacent rather than direct source",
+        "Delivers a coverage table naming real remaining gaps",
+        "Identifies that the spec's reviewer-edit-rate measure fights the accuracy-over-coverage rule"
+      ],
+      "files": ["evals/fixtures/spec-for-prompt.md"]
+    },
+    {
+      "id": 2,
+      "name": "unattended-research-agent",
+      "prompt": "I need a system prompt for a research agent. It should take a question from our analysts, search the web, and write up a short briefing with sources. Should run unattended overnight and drop the briefing in a shared folder by morning.",
+      "expected_output": "Recognises that unattended operation removes the notification channel and designs around it. Sets concrete budgets rather than vague ones, and prevents the agent acting on the web rather than only reading.",
+      "assertions": [
+        "Recognises that unattended operation means there is no channel to report failure, and designs around it",
+        "Requires an output file even on failure, so an empty folder is not ambiguous",
+        "Requires the agent to distinguish what it verified from what it could not",
+        "Sets an autonomy boundary preventing the agent from taking actions on the web rather than only reading",
+        "Names which wins between brevity and completeness",
+        "Enumerates the input shapes an analyst question can take",
+        "Sets concrete budgets - counts and times, not 'reasonable' or 'too long'",
+        "Delivers a coverage table naming real remaining gaps"
+      ],
+      "files": []
+    },
+    {
+      "id": 3,
+      "name": "constrained-tools-capability-grounding",
+      "prompt": "Write me a system prompt for an agent that triages our inbound bug reports. It should read the report, work out severity, and file it in our tracker. The agent has exactly these tools and nothing else: read_report(), search_existing_issues(query), create_issue(title, body, severity). It runs on a schedule with nobody watching. Model is a mid-size one, not our best.",
+      "expected_output": "Every instruction executable with only the three tools. Missing escalation named as a finding with the closest available behaviour written instead. Untrusted report text handled with manipulations specific to a triage agent.",
+      "assertions": [
+        "Every instruction in the prompt is executable with only the three stated tools",
+        "Recognises there is no escalation tool and writes the closest available behaviour instead of an unexecutable instruction",
+        "Names the missing escalation tool as a finding rather than papering over it",
+        "Recognises create_issue is irreversible and that no draft/propose boundary is possible",
+        "Handles the unattended condition - a silent skip leaves no trace anyone will see",
+        "Names report text as untrusted content with manipulations specific to a triage agent",
+        "Covers tone as a manipulation, not only instruction-shaped text",
+        "No two rules give opposite answers to the same hard case"
+      ],
+      "files": []
+    },
+    {
+      "id": 4,
+      "name": "unstated-capabilities-must-be-declared",
+      "prompt": "Can you write a system prompt for an agent that keeps our competitor intelligence page up to date? It should notice when something changes and update the page.",
+      "expected_output": "No capabilities stated, so the skill should check its own, verify that persistent state is actually available, and declare the assumed set prominently in the handback.",
+      "assertions": [
+        "Establishes a capability set rather than writing against an unstated one",
+        "States the assumed capability set in the handback itself, not only a supporting file",
+        "Explicitly flags the no-human-contact assumption as the one most worth correcting",
+        "Identifies that 'notice when something changes' requires persistent state, and checks that is possible",
+        "Identifies that no notification capability exists and names it as the first tool to add",
+        "Identifies that all fallback routes share a network dependency",
+        "Delivers a coverage table naming real remaining gaps",
+        "Prompt is not organised into five sections named after the dimensions"
+      ],
+      "files": []
+    }
+  ]
+}
