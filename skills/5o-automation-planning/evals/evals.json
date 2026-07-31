@@ -1,0 +1,60 @@
+{
+  "skill_name": "5o-automation-planning",
+  "evals": [
+    {
+      "id": 0,
+      "name": "clean-brief-single-spec",
+      "prompt": "Here's the brief for our candidate screening automation. Turn it into a spec we can build from.",
+      "expected_output": "One spec, no decomposition, no interruption. Should assign all four automation levels per step, state that no fallback is independent of the tracking system, and carry the brief's non-blocking OPENs forward without resolving them.",
+      "assertions": [
+        "Produces ONE spec - does not decompose a single process",
+        "Does not interrupt with questions when no blocking OPEN exists",
+        "Names no tool, vendor, or platform",
+        "Assigns all four automation levels (collect/interpret/decide/act) per step",
+        "States explicitly that no fallback route is independent of the tracking system",
+        "Specifies that degradations are recorded, not only failures",
+        "Observation covers all three horizons: now, accumulated, trending",
+        "Carries the brief's non-blocking OPENs forward without silently resolving them",
+        "No rule is stated in more than one place",
+        "Spec length is proportionate to the process"
+      ],
+      "files": ["evals/fixtures/brief-clean.md"]
+    },
+    {
+      "id": 1,
+      "name": "blocking-opens-must-be-resolved-first",
+      "prompt": "Can you plan out this invoice routing automation? Brief attached.",
+      "expected_output": "Stops before specifying and asks about the three blocking OPENs. When the authority matrix cannot be resolved, does not invent a mapping — separates what is buildable now from what is gated, and keeps the blocking item visible.",
+      "assertions": [
+        "Asks about the blocking OPENs BEFORE writing the spec",
+        "Asks no more than 3 questions in a single round",
+        "Does NOT invent an approver mapping to fill the unresolvable blocking gap",
+        "Separates what can be built now from what is gated on the unresolved matrix",
+        "Names no tool, vendor, or platform",
+        "Specifies duplicate detection on more than invoice number, per the re-sent PDF finding",
+        "Names the touchless-percentage measure as fighting the duplicate rule, and states which wins",
+        "The unresolved blocking item remains visible in the delivered spec"
+      ],
+      "files": ["evals/fixtures/brief-blocking-opens.md"]
+    },
+    {
+      "id": 2,
+      "name": "multi-process-should-decompose",
+      "prompt": "Here's our incident response brief - please turn it into a spec.",
+      "expected_output": "Decomposes into parent plus child specs on stated evidence. Children carry contract blocks, shared preconditions sit in the parent gate, failures are classified hard or soft, and no rule is repeated across artefacts.",
+      "assertions": [
+        "Decomposes into a parent spec plus child specs",
+        "States the specific evidence for decomposing (triggers, owners, finished conditions)",
+        "Each child spec carries a contract block: guaranteed by parent / consumes / produces / escalates",
+        "Puts shared preconditions in the parent gate rather than repeating them per child",
+        "Classifies failures as hard (halts) or soft (continues with a flag)",
+        "Identifies the paging fallback chain as sharing a failure domain",
+        "Names no tool, vendor, or platform",
+        "Names the postmortem-completion-rate measure as fighting quality, and states priority",
+        "No rule is repeated across parent and children - each stated once where enforced",
+        "Child specs are substantially shorter than the parent, not photocopies of it"
+      ],
+      "files": ["evals/fixtures/brief-multi-process.md"]
+    }
+  ]
+}

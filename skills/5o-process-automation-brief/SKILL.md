@@ -1,5 +1,5 @@
 ---
-name: process-automation-brief
+name: 5o-process-automation-brief
 description: Turns a rough automation idea into a decision-complete brief through a short structured interview. Use this whenever someone describes something they want to automate — a workflow, a repetitive task, an approval chain, a content pipeline, a data handoff, an AI agent — and has not yet nailed down the decisions a builder would need. Trigger on phrases like "I want to automate...", "can we build something that...", "I keep doing X manually", "we should have a bot that...", or when someone asks for help scoping, specifying, or planning an automation. Also use when a user has a vague automation idea and asks what questions they should be answering. This produces the brief that feeds automation planning — it does not produce the technical spec itself.
 ---
 
