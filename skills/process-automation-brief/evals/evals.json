@@ -1,0 +1,73 @@
+{
+  "skill_name": "process-automation-brief",
+  "evals": [
+    {
+      "id": 0,
+      "name": "vague-idea-needs-deep-interview",
+      "prompt": "i want to automate our invoice thing. right now when an invoice comes in someone in finance has to check it and then it goes to whoever needs to approve it and then it gets paid. takes way too long, sometimes weeks. can you help me figure out what we actually need here",
+      "expected_output": "A decision-complete brief under 1000 words. Vague idea, so the interview should run as long as needed. Every question should be earning work, resources, or responsibility. Should surface approval thresholds, duplicate-payment prevention, safe stop, and who owns escalation.",
+      "assertions": [
+        "Never asks more than 3 questions in a single round (a follow-up counts as a new round)",
+        "Brief is 1000 words or fewer",
+        "Every question asked is pinning down work, resources, or responsibility - no idle context gathering",
+        "Names a specific person or role for every failure path, not 'the team'",
+        "Brief marks genuinely undecided items as OPEN rather than inventing answers",
+        "Brief ends with 3-6 concrete recommendations",
+        "Brief stays out of implementation - no tool choice, architecture, or vendor selection",
+        "Captures a safe stop - what happens when the process cannot complete"
+      ],
+      "files": []
+    },
+    {
+      "id": 1,
+      "name": "well-specified-idea-should-not-over-ask",
+      "prompt": "We need a brief for an automation. When a candidate submits an application through our Greenhouse careers page, we want to screen it against the role's must-have requirements, reject the clear no-matches with a templated email within 24 hours, and push everyone else to the hiring manager's review queue. Legal has told us a human must sign off on every rejection — that is non-negotiable. We don't want it touching internal referrals or anything from the exec search firm, those go straight to the hiring manager. Success is time-to-first-response under 24h without our false rejection rate going up. Ravi in Talent Ops owns it.",
+      "expected_output": "A brief under 1000 words reflecting the supplied decisions without re-asking them. Should target only genuine gaps: Greenhouse outage, what 'clear no-match' means, the safe stop, false rejection detection, who covers for Ravi.",
+      "assertions": [
+        "Never asks more than 3 questions in a single round (a follow-up counts as a new round)",
+        "Does NOT re-ask anything the user already stated (trigger, exclusions, legal sign-off, success measure, owner)",
+        "Brief is 1000 words or fewer",
+        "Identifies that every fallback route depends on Greenhouse - shared failure domain",
+        "Identifies that Ravi is a single owner with no backup",
+        "Identifies that the 24h speed target conflicts with the human sign-off requirement",
+        "Brief ends with 3-6 concrete recommendations",
+        "Brief stays out of implementation - no tool choice or architecture"
+      ],
+      "files": []
+    },
+    {
+      "id": 2,
+      "name": "broken-premise-should-be-challenged-once",
+      "prompt": "Every Monday I spend about two hours copying numbers out of four different dashboards into a slide deck, then I email it to the leadership team. I want to automate the whole thing so the deck builds itself and sends Monday morning. Nobody ever replies to it but I have to send it.",
+      "expected_output": "Challenges the premise exactly once with a concrete alternative, respects the answer, then produces a complete brief under 1000 words with the readership question carried into recommendations.",
+      "assertions": [
+        "Challenges whether the report should exist AT ALL",
+        "Challenges it exactly ONCE, then respects the user's answer and proceeds",
+        "Offers a concrete alternative when challenging, not just a vague doubt",
+        "Never asks more than 3 questions in a single round (a follow-up counts as a new round)",
+        "Still produces a complete brief after the user declines the challenge",
+        "Carries the readership question into the recommendations rather than dropping it",
+        "Brief is 1000 words or fewer",
+        "Brief stays out of implementation - no tool choice or architecture"
+      ],
+      "files": []
+    },
+    {
+      "id": 3,
+      "name": "oversized-scope-should-be-split",
+      "prompt": "We want to automate customer onboarding end to end. Right now when a deal closes, sales hands it to us in a Slack message, then someone has to get the contract countersigned, set up their account in our platform, provision seats, schedule a kickoff call, build them a custom training plan, get their billing set up in Stripe, and then hand them to the customer success manager after 30 days. It's owned by me for the account setup part, but Finance owns billing and CS owns the kickoff and training. Different bits break all the time and we lose track of where people are.",
+      "expected_output": "Should recognise this is several processes, not one — multiple triggers, three owners (user, Finance, CS), multiple 'finished' conditions. Should propose a named split, recommend which subprocess to automate first with a reason, then write a brief for THAT ONE subprocess under 1000 words, listing the others as deliberately out of scope.",
+      "assertions": [
+        "Recognises the scope is more than one automation",
+        "Proposes a named split into specific subprocesses",
+        "Recommends which subprocess to automate first, with a stated reason",
+        "Writes the brief for ONE subprocess, not all of them",
+        "Names the other subprocesses as deliberately out of scope",
+        "Brief is 1000 words or fewer",
+        "Never asks more than 3 questions in a single round (a follow-up counts as a new round)",
+        "Identifies the three-owner problem as a reason for splitting"
+      ],
+      "files": []
+    }
+  ]
+}
