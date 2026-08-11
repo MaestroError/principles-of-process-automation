@@ -1,0 +1,23 @@
+[
+  {"query": "I wrote this skill weeks ago and Claude has literally never used it once. I have to point at the file every single time. what did I do wrong", "should_trigger": true},
+  {"query": "can you take a look at ~/.claude/skills/release-notes/SKILL.md and tell me why it's so bloated? every time it loads the rest of the conversation gets dumber", "should_trigger": true},
+  {"query": "ok this is the fourth time this month I've explained our Monday renewal report to someone. I want to just capture it once so claude does it. how do I do that", "should_trigger": true},
+  {"query": "our data-helper skill fires on absolutely everything. someone asked what a median was and it started cleaning a csv. help", "should_trigger": true},
+  {"query": "turn what we just did into a skill so I don't have to walk you through it again next quarter", "should_trigger": true},
+  {"query": "I've got two skills that both grab the same requests and whichever one wins seems random. how do I make them stay in their lanes", "should_trigger": true},
+  {"query": "writing a SKILL.md for our design token pipeline - the version bump order is fragile and people keep getting it wrong. how much should I lock down vs leave to judgement", "should_trigger": true},
+  {"query": "half my team is on claude code and half is in the desktop app and our contractors use the web thing. can I write one skill that works for all of them", "should_trigger": true},
+  {"query": "review my SKILL.md before I share it with the team", "should_trigger": true},
+  {"query": "the description on this skill is doing nothing, can you rewrite it so it actually fires when people need it", "should_trigger": true},
+
+  {"query": "our support agent keeps promising refunds it shouldn't. here's the system prompt, what's wrong with it", "should_trigger": false},
+  {"query": "can you run the eval set in skills/5o-automation-prompt/evals and show me the pass rates against baseline", "should_trigger": false},
+  {"query": "what skills do I currently have installed", "should_trigger": false},
+  {"query": "use the xlsx skill to fix the column alignment in this export, headers are buried in row 4", "should_trigger": false},
+  {"query": "how do I install a plugin marketplace in claude code? our team wants a shared set", "should_trigger": false},
+  {"query": "I want to automate our invoice approvals - three approvers, different thresholds. can you help me work out what we actually need", "should_trigger": false},
+  {"query": "write internal documentation for our onboarding workflow so new hires can follow it", "should_trigger": false},
+  {"query": "what's the difference between a skill, an MCP server and a subagent? trying to explain it to my manager", "should_trigger": false},
+  {"query": "our new analyst has no SQL skills at all, what's a reasonable ramp-up plan for her first month", "should_trigger": false},
+  {"query": "build me an MCP server that exposes our internal ticket API to claude", "should_trigger": false}
+]

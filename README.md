@@ -35,13 +35,14 @@ If you read one file in this repository, read that one.
 
 ## Use it with your AI agent
 
-Three skills apply the framework so you do not have to hold it all in your head. They chain — idea to brief to spec to prompt — but each one works on its own.
+Four skills apply the framework so you do not have to hold it all in your head. Three of them chain — idea to brief to spec to prompt. The fourth sits beside that chain and is about the skills themselves. Each works on its own.
 
 | Skill | Takes | Gives back |
 |---|---|---|
 | **[`5o-process-automation-brief`](./skills/5o-process-automation-brief)** | A rough idea, however vague | A decision-complete brief, via a short interview |
 | **[`5o-automation-planning`](./skills/5o-automation-planning)** | A brief | A buildable specification |
 | **[`5o-automation-prompt`](./skills/5o-automation-prompt)** | A spec, or just a description | An agent or system prompt — and it audits existing ones |
+| **[`5o-skill-design`](./skills/5o-skill-design)** | A workflow you keep repeating, or a skill that misbehaves | A skill directory — and it audits existing ones |
 
 **What they actually do for you:**
 
@@ -50,6 +51,8 @@ The **brief** skill interviews you about the parts you have not thought about ye
 The **planning** skill turns that into a spec. It stops and asks about anything that would change the design rather than specifying around a hole, and it never names a tool — what must be true, not which vendor.
 
 The **prompt** skill writes and audits agent prompts. It checks what your agent can *actually* do first, because "escalate to a human" in an agent with no escalation tool is not a control — it just looks like one. It also treats anything the agent reads from outside as an attack surface.
+
+The **skill design** skill writes and audits skills. Two things separate a skill from a prompt, and they are most of what it is about: a prompt is always loaded, but a skill has to be *chosen* — so the description field is the whole trigger, and a skill that never fires fails silently, forever. And a prompt runs where you deployed it, while a skill runs wherever someone installs it, on tools you cannot enumerate. It also asks the question almost no skill answers: what does this skill do when it does not fit?
 
 ### Installing them
 
@@ -72,6 +75,8 @@ Use `.claude/skills/` inside a project instead if you only want them there. Rest
 > "I want to automate our invoice approvals — can you help me work out what we actually need?"
 
 > "Here's our agent prompt. It keeps promising things it shouldn't. What's wrong with it?"
+
+> "I wrote this skill weeks ago and Claude has never once used it. What did I do wrong?"
 
 ---
 

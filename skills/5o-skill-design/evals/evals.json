@@ -1,0 +1,91 @@
+{
+  "skill_name": "5o-skill-design",
+  "evals": [
+    {
+      "id": 0,
+      "name": "audit-skill-that-never-triggers",
+      "prompt": "I wrote this skill weeks ago and Claude has literally never used it. I have to point at it every single time. What did I do wrong?",
+      "expected_output": "Audit mode. Traces the reported symptom to the description's author vocabulary, and also catches the defects the user did not ask about: context bloat, the missing hand-back, the nested reference, and emphasis spent until it carries nothing. Delivers a rewritten skill plus a coverage table.",
+      "assertions": [
+        "Traces the never-triggers symptom to the description being written in the author's vocabulary rather than the user's, quoting the offending text",
+        "Rewrites the description to include phrasings a user would actually type, such as release notes or changelog",
+        "Identifies that the introduction and background sections teach the model things it already knows and cuts them",
+        "Notices the skill has no way to hand back when the request is not a release-notes request",
+        "Flags the nested reference chain from SKILL.md to templates/format.md to templates/examples.md as a partial-read risk",
+        "Flags the block of stacked ALWAYS and NEVER as emphasis that no longer discriminates",
+        "Notices the skill has no evals and proposes assertions tied to a named baseline failure",
+        "Delivers a coverage table naming real remaining gaps",
+        "Rewritten skill is NOT organised into five sections named after the dimensions"
+      ],
+      "files": ["evals/fixtures/skill-never-triggers.md"]
+    },
+    {
+      "id": 1,
+      "name": "audit-skill-that-overtriggers",
+      "prompt": "This one has the opposite problem to my last skill - it fires on everything. Someone asked Claude to explain what a median is and it started trying to clean a file. Can you fix it?",
+      "expected_output": "Audit mode focused on Occurrence. Narrows the description to a situation rather than a keyword list, adds near-miss exclusions, and separately catches that the skill's defaults destroy data with no way to decline.",
+      "assertions": [
+        "Identifies the description as a keyword list rather than a statement of the situation the skill applies to",
+        "Adds explicit non-uses covering explanation and analysis requests that merely mention data",
+        "Removes or rewrites the 'always use this skill for any data task' instruction as the cause of the overtriggering",
+        "Notices that median-filling and duplicate-dropping are destructive defaults applied without asking",
+        "Notices the skill cannot decline - there is no path where the right answer is to not clean the file",
+        "Flags 'if the input is very large, sample it' as a limit too vague to follow",
+        "Names which neighbouring skill or tool should win for cases this one should not take",
+        "Delivers a coverage table naming real remaining gaps"
+      ],
+      "files": ["evals/fixtures/skill-overtriggers.md"]
+    },
+    {
+      "id": 2,
+      "name": "write-skill-from-described-workflow",
+      "prompt": "I recorded a call with one of our CS leads about a report she rebuilds every Monday. She's leaving in a month and I want this captured as a skill before she goes. Can you build it?",
+      "expected_output": "Write mode from a transcript. Should extract the decision rules, the exception the speaker flagged, the readiness check and the deduplication problem from what she actually described, rather than interviewing from scratch. Should include the reason-unknown hand-back she learned the hard way.",
+      "assertions": [
+        "Extracts the inclusion thresholds from the transcript rather than inventing new ones",
+        "Captures the subsidiary-of-a-surviving-parent case as a distinct case, not as churn",
+        "Captures the stale-export readiness check as a precondition before work starts",
+        "Captures the duplicate-contract deduplication as a step, since it corrupts the headline number",
+        "Includes explicit permission to write 'reason unknown' rather than inferring a reason",
+        "Provides the output shape as a template, since the transcript describes a fixed one",
+        "Description is written in the words the user would type, not in the author's framing",
+        "Writes evals whose assertions would fail without the skill",
+        "Delivered SKILL.md is NOT organised into five sections named after the dimensions"
+      ],
+      "files": ["evals/fixtures/workflow-transcript.md"]
+    },
+    {
+      "id": 3,
+      "name": "write-skill-with-fragile-sequence",
+      "prompt": "We keep breaking our design token exports. The process is: pull tokens from the source repo, run the transform, regenerate the platform files, then bump the version in three places - package.json, the CHANGELOG, and the tokens manifest - and they have to be bumped in that order because the manifest reads the package version. If anyone does it out of order the build passes and the published package is wrong. Can you make this a skill so people stop getting it wrong?",
+      "expected_output": "Write mode where the freedom level is the design question. Should give exact commands and an explicit ordering rule for the fragile part, propose a script or validator rather than prose, and not over-constrain the parts that are genuinely open.",
+      "assertions": [
+        "Specifies the version bump order as an exact sequence rather than as general guidance",
+        "States the consequence that makes the ordering matter - the build passes while the package is wrong",
+        "Proposes a script or a validation check rather than relying on prose to prevent the error",
+        "Includes a verification step that would catch the failure before publishing",
+        "Does not apply the same rigidity to the parts of the process that tolerate variation",
+        "Names what the skill should do if a bundled script fails or is missing, rather than falling back to manual steps",
+        "Delivers a coverage table naming real remaining gaps"
+      ],
+      "files": []
+    },
+    {
+      "id": 4,
+      "name": "harness-grounding-across-installs",
+      "prompt": "I want to write a skill that reviews our PRs against our internal style guide and produces a report the reviewer can open. Half my team uses Claude Code in the terminal, the others are on the desktop app, and our contractors just use the web chat. Where do I start?",
+      "expected_output": "Recognises that the three environments differ in shell, display and subagent availability, and designs instructions that degrade rather than break. Declares assumptions in the handback itself.",
+      "assertions": [
+        "Identifies that the three environments differ in what they can execute, display, and write to",
+        "Writes fallbacks in the same place as the instructions that need them, not in a compatibility section at the end",
+        "Chooses a portable default for the report rather than one requiring a browser or a local server",
+        "Describes capabilities rather than naming specific tools that may not exist in every environment",
+        "Assumes the skill directory may be read-only",
+        "States the assumed capability set in the handback itself, not only inside the files",
+        "Names any capability gap as a finding rather than writing an instruction that silently cannot run",
+        "Delivers a coverage table naming real remaining gaps"
+      ],
+      "files": []
+    }
+  ]
+}
