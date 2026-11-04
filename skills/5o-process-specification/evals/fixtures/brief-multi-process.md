@@ -1,4 +1,6 @@
-# Automation Brief: Incident response and postmortem
+# Process Brief: Incident response and postmortem
+
+**Specification kind:** Prescriptive
 
 **Status:** Ready for planning
 
@@ -88,5 +90,5 @@
 ## Recommendations
 
 1. **Postmortem completion is a people problem, not a tooling one.** Half are missing today; automating the reminder will not change that on its own.
-2. **The paging fallback chain shares a failure domain** — group chat and the paging system are both third-party SaaS.
+2. **The paging fallback chain shares a failure domain** — the group chat and paging service both depend on the same identity provider. Their shared authentication outage would disable both; the phone route has a separate dependency to assess.
 3. **"Severity unclear → treat as high"** will produce false high-severity pages. Accept that or define a middle case.

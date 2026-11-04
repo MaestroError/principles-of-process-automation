@@ -16,7 +16,9 @@
         "Delivers a coverage table naming real remaining gaps",
         "Revised prompt is NOT organised into five sections named after the dimensions"
       ],
-      "files": ["evals/fixtures/weak-agent-prompt.md"]
+      "files": [
+        "evals/fixtures/weak-agent-prompt.md"
+      ]
     },
     {
       "id": 1,
@@ -33,7 +35,9 @@
         "Delivers a coverage table naming real remaining gaps",
         "Identifies that the spec's reviewer-edit-rate measure fights the accuracy-over-coverage rule"
       ],
-      "files": ["evals/fixtures/spec-for-prompt.md"]
+      "files": [
+        "evals/fixtures/spec-for-prompt.md"
+      ]
     },
     {
       "id": 2,
@@ -41,7 +45,7 @@
       "prompt": "I need a system prompt for a research agent. It should take a question from our analysts, search the web, and write up a short briefing with sources. Should run unattended overnight and drop the briefing in a shared folder by morning.",
       "expected_output": "Recognises that unattended operation removes the notification channel and designs around it. Sets concrete budgets rather than vague ones, and prevents the agent acting on the web rather than only reading.",
       "assertions": [
-        "Recognises that unattended operation means there is no channel to report failure, and designs around it",
+        "Establishes the available evidence and notification surfaces rather than assuming unattended work has no possible channel",
         "Requires an output file even on failure, so an empty folder is not ambiguous",
         "Requires the agent to distinguish what it verified from what it could not",
         "Sets an autonomy boundary preventing the agent from taking actions on the web rather than only reading",
@@ -77,12 +81,27 @@
       "assertions": [
         "Establishes a capability set rather than writing against an unstated one",
         "States the assumed capability set in the handback itself, not only a supporting file",
-        "Explicitly flags the no-human-contact assumption as the one most worth correcting",
+        "Explicitly flags assumptions about available escalation recipients and communication channels",
         "Identifies that 'notice when something changes' requires persistent state, and checks that is possible",
         "Identifies that no notification capability exists and names it as the first tool to add",
         "Identifies that all fallback routes share a network dependency",
         "Delivers a coverage table naming real remaining gaps",
         "Prompt is not organised into five sections named after the dimensions"
+      ],
+      "files": []
+    },
+    {
+      "id": 5,
+      "name": "ai-recipient-bounded-owner",
+      "prompt": "# Process Brief: AI-only research collection\n\nKind: Prescriptive. All roles inside this process are AI agents: record assessor, specialist assessor, and collection steward. The steward owns the process and may revise assessment order and clarification guidance within charter v1, but cannot alter scope, evidence rules, access permissions, or the deadline. Charter v1 supplies authority; its governing organization retains wider accountability outside this boundary. Do not add human review or human escalation.\n\nThe outcome is a collection of source-supported records by 18:00 UTC on the charter date, plus excluded/pending dispositions. Coverage may be sacrificed to evidence quality. Intake requires accessible source provenance, writable record storage, permissions matching the role, and an open processing window. Recheck source access and permissions before acceptance. Independent records can run concurrently within the charter's budget. Provenance precedes support assessment; support precedes acceptance; conflicting versions remain pending until reconciled.\n\nMethodological uncertainty goes to the specialist assessor, not automatically to the steward. The specialist can inspect sources and resolve within the fixed evidence standard. Transfer record id, source spans, criteria/checks, actions, current state, and requested decision. It must acknowledge within ten minutes or before 18:00, whichever comes first. Responsibility for that decision transfers on acknowledgment. Unavailable/unresolved cases remain pending outside the accepted set by closeout; do not cycle them repeatedly. Only procedure-policy questions go to the steward under the same contract. Source substitutes must be charter-permitted and provenance-checked. A source outage may disable every source-dependent route; do not claim an independent fallback.\n\nRecord sources, decisions, substitutions, transfers, acknowledgments, and unresolved reasons. At closeout the steward checks all unresolved dispositions and a charter-defined sample of accepted records, then identifies any authorized procedure revision by version and notifies assessors. This is a finite collection, so closeout review applies; continuous trend monitoring is not required. Tools and agent implementation choices are outside this specification.\n\nWrite the assessor prompt. Its stated tools are read_source, update_record, send_to_specialist, and write_closeout_record. send_to_specialist returns an acknowledgment and decision status. The assessor cannot edit the charter or collection procedure.",
+      "expected_output": "An assessor prompt honoring the AI-only assignments, explicit specialist transfer and non-resolution handling, and tool/authority boundaries.",
+      "assertions": [
+        "Names the specialist AI as methodology escalation recipient rather than a human or default process owner",
+        "Uses only supplied capabilities; does not invent a procedure-editing tool",
+        "Includes source evidence/actions/state/request in transfer and checks acknowledgment",
+        "Keeps unresolved records pending outside the accepted collection without repeated transfer loops",
+        "Does not enlarge the assessor authority to match the steward authority",
+        "Reports any unsupported procedure-escalation channel as a gap rather than claiming transfer succeeded"
       ],
       "files": []
     }

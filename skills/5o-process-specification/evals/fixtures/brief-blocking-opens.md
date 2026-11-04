@@ -1,4 +1,6 @@
-# Automation Brief: Supplier invoice intake and routing
+# Process Brief: Supplier invoice intake and routing
+
+**Specification kind:** Prescriptive
 
 **Status:** Blocked on open questions
 
@@ -52,10 +54,10 @@
 
 | Job | Who | Notes |
 |---|---|---|
-| Owns the outcome | Dana (Controller) | |
+| Process owner | Dana (Controller) | |
 | Can change the rules | Dana | |
 | Approves an invoice | Whoever owns the budget line | **See open questions — the mapping is not current** |
-| Picks up escalations | **OPEN** | |
+| Escalation recipient | **OPEN** | |
 
 ---
 

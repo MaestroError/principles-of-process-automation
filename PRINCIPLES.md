@@ -1,386 +1,348 @@
-# The Five O Principles of Process Automation
+# The Five O Principles of Process Specification
 
-*A domain-neutral grammar for specifying, automating, and evolving any process — regardless of whether its operators are human, mechanical, algorithmic, or artificial.*
-
----
-
-## Preface: what this document is and is not
-
-This document states five principles that together form a **minimum complete specification** for an automatable process. It is not a methodology, a notation, or a maturity model. It is a grammar: a small set of dimensions that any process must define before it can be delegated to an operator that is not the person who designed it.
-
-The claim is not novelty. Every one of the five dimensions has been studied for decades under different vocabularies — as setpoints in control theory, start events in workflow notation, dependencies in coordination theory, graceful degradation in human factors, and event logs in process mining. The claim is **synthesis and portability**: these traditions have never been reconciled into a single, memorable, cross-domain checklist, and practitioners consequently apply one tradition's rigor while inheriting another tradition's blind spots. A control engineer rarely thinks about function allocation. A business analyst rarely thinks about requisite variety. A prompt engineer rarely thinks about either.
-
-The Five Os are therefore offered as an **interoperability layer** between mature disciplines, not as a replacement for any of them. Where a discipline offers greater rigor for a given dimension — Petri nets for Order, STPA for Occurrence, process mining for Observation — the Five O framework's job is to tell you that you need it, not to substitute for it.
-
-A caution stated up front, because it governs everything below: **the Five Os are a grammar, not a guarantee.** A process can satisfy all five dimensions completely and still be a bad process, because completeness of specification says nothing about the wisdom of what was specified. This is the enduring force of Hammer's (1990) directive to *obliterate rather than automate*: an automation that flawlessly executes an obsolete objective is a more efficient way of being wrong.
+*A universal framework for stating how a process operates or is required to operate, independent of the kind of entity performing it.*
 
 ---
 
-## 1. What is a process?
+## Preface: purpose and limits
 
-> **A process is a bounded transformation: a set of interrelated activities that consume inputs and produce an intended result, performed by one or more operators, repeatably enough that its structure can be described independently of any single execution.**
+The Five Os identify five dimensions to consider when specifying a process: **Objective, Occurrence, Order, Option, and Observation**. Two cross-cutting requirements make those dimensions concrete: **ownership and authority**, and **objects and resources**.
 
-Four elements of this definition do real work.
+The framework supports understanding existing work, designing new work, coordination, delegation, assessment, and revision. Automation is one application. A specification can describe a process performed entirely by people, entirely by AI or machines, or by a combination, using the same core terms.
 
-**Bounded.** A process has a beginning and an end. Work that has no defined completion is not a process but a *practice* or a *state*. Continuous control loops qualify only because each control cycle is itself a bounded transformation.
+These are obligations on a **specification**, not instructions for choosing an implementation. Stating a requirement does not establish that any particular operator can satisfy it. An operator-independent specification supports a transition between implementations; it does not guarantee interchangeability. Capabilities, interfaces, authority, resources, and evidence must be assessed for each implementation.
 
-**Transformation.** Something must change. A process that consumes inputs and produces nothing distinguishable from the inputs is waste, and should be eliminated rather than automated.
+The claim is synthesis and portability, drawing on quality management, control theory, coordination theory, workflow formalisation, human factors, and socio-technical design. These disciplines provide deeper methods where needed. Five O helps identify the questions; it does not replace those methods or claim that five headings prove completeness.
 
-**Operator-agnostic.** The definition deliberately does not say *who* performs the activities. This is the load-bearing move for domain neutrality. Historically, automation theory has recognised that the division of labour precedes and shapes mechanization — Adam Smith (1776) observed that machines which abridge labour originate in the division of labour itself, and Babbage systematised this into what Pasquinelli (2024) calls a labour theory of automation: the structure of human work becomes an abstract machine before it becomes an actual one. If a process is properly specified, reassigning it between a clerk, a script, a PLC, and an LLM agent is a *deployment decision*, not a redesign.
+---
 
-**Repeatably describable.** A one-off act is not a process. Automatability requires that the structure recur even when the particulars vary.
+## 1. Process, specification, and shared terms
 
-### The completeness claim
+> **A process is a related set of activities through which inputs, resources, and conditions contribute to an outcome, including changing something, maintaining a condition, or preventing an unwanted change.**
 
-The five principles correspond to five questions that must be answerable before a process can be delegated:
+A process may be finite, recurring, or continuous. A one-time undertaking may contain a process worth specifying. Boundaries remain essential: state what the specification covers, what it excludes, and how it relates to surrounding work. Continuous processes need operating and suspension conditions even when they have no scheduled completion.
 
-| Dimension | Question | Phase |
-|---|---|---|
-| **Objective** | What result counts as success, within what boundaries? | Setup |
-| **Occurrence** | Under what conditions may execution begin or continue? | Setup |
-| **Order** | What must be true before what, and what may proceed in parallel? | Execution |
-| **Option** | What happens when reality diverges from the nominal path? | Execution |
-| **Observation** | What evidence does execution produce, and how does that evidence change the process? | Evolution |
+A **process specification** states how a process operates or is required to operate, at a declared scope and level of detail. It is distinct from a single execution and from the implementation used to carry it out.
 
-**Setup** (Objective, Occurrence) establishes the control boundary. **Execution** (Order, Option) encodes the operational logic. **Evolution** (Observation) closes the loop back onto Setup.
+### Descriptive and prescriptive specifications
 
-The framework's assertion is that these five are *jointly sufficient* for specification and *individually necessary*: remove any one and a distinct, well-documented class of failure becomes available. Those failure classes are named in each section below.
+- **Descriptive:** records how the process currently operates. Unknowns and observed departures remain visible; missing controls must not be invented to make the description look complete.
+- **Prescriptive:** states how the process is required to operate. Requirements must be distinguishable from assumptions, examples, recommendations, and unresolved decisions.
+
+A document may contain both, provided each statement's status is clear. An intended change is not evidence of current practice. An existing practice is not automatically a requirement.
+
+### Roles and assignments
+
+The canonical definitions are in [TERMS.md](./TERMS.md). In brief:
+
+| Term | Responsibility |
+|---|---|
+| **Operator** | Performs a specified activity, including gathering information, interpreting, deciding, or acting. |
+| **Process owner** | Holds responsibility for the process as a whole, with defined authority over requirements, performance, and revision. |
+| **Escalation recipient** | Receives a situation that the current operator cannot resolve within its capability or authority. |
+| **Role assignment** | Maps a role to the entity filling it: a person, team, organizational unit, machine, software system, or AI agent. |
+
+These roles are distinct even when one entity fills several. An escalation recipient is not necessarily the process owner or a hierarchical superior. It must possess the capability, authority, or resources required for the particular situation. No core role is inherently human.
+
+Functional ownership within the process does not, by itself, settle organizational accountability. The surrounding governance specification identifies who answers for conduct, how authority is granted and limited, and who may change or withdraw it. A particular context may require a human or organizational owner; the universal framework does not prescribe one.
+
+### Coverage and proportionality
+
+| Dimension | What the specification must make explicit |
+|---|---|
+| **Objective** | Outcomes, boundaries, constraints, trade-offs, and criteria for success or justified termination. |
+| **Occurrence** | Conditions for beginning, continuing, suspending, resuming, and ending activity. |
+| **Order** | Dependencies, state transitions, coordination, discretion, and completion conditions. |
+| **Option** | Permitted alternatives and responses to deviation, unavailable dependencies, and unresolved situations. |
+| **Observation** | Evidence, evaluation responsibility, and the route from findings to revision. |
+
+Consider every dimension, but scale detail to purpose, complexity, uncertainty, and consequence. A justified statement of non-applicability is preferable to invented machinery. Continuous trend monitoring may be irrelevant to a short, one-time process; a completion check may be enough. An unspecified exception response is a gap, not an implicit permission to improvise without limits.
+
+Coverage is a review scaffold. It does not prove that requirements are exhaustive, consistent, feasible, correct, or desirable. Domain-specific requirements may be needed within or alongside these dimensions.
 
 ### Three running cases
 
-To demonstrate that the principles are not artefacts of any one domain, the same three cases are traced through all five:
+These examples illustrate the same vocabulary across different assignments. They are specification examples, not validated operating procedures.
 
-- **Case L — Legal.** Enterprise NDA intake, review, negotiation, and execution. Operators: paralegal, counsel, clause-extraction model, e-signature platform.
-- **Case I — Industrial.** Temperature control of a batch chemical reactor within a production run. Operators: PID controller, safety interlock, panel operator.
-- **Case D — Digital/AI.** An agentic system that triages inbound customer support requests and drafts or executes resolutions. Operators: LLM agent, backend APIs, support engineer.
+- **Case M — Manual.** Library loans handled entirely by people using paper records. Roles: lending clerk, lending supervisor, and library services manager.
+- **Case A — AI.** Research records assessed and routed entirely by AI agents. Roles: record assessor, specialist assessor, and collection steward. The collection steward holds bounded process ownership; no human approval or human escalation is assumed within this process.
+- **Case X — Mixed.** Equipment maintenance coordinated by a monitoring system, technician, and maintenance supervisor.
 
 ---
 
-## 2. Objective — What is the goal, and what are its boundaries?
+## 2. Objective — Specify outcomes and limits
 
-> **The Objective is the complete definition of success: the intended result, the boundary of legitimate action, and the trade-offs the process is authorised to make.**
+> **State the intended outcome or maintained condition, its scope, the constraints on legitimate action, permitted trade-offs, and criteria for success or justified termination.**
 
-### The Rule
+### Required content
 
-An Objective is insufficiently specified until it states four things: the **intended value** delivered and to whom; the **scope boundary** — what is explicitly outside this process; the **non-negotiable constraints** — the absolute must-nots; and the **acceptable trade-offs** among cost, time, quality, and flexibility. It must also state **stop criteria**: the conditions under which abandoning the objective is the correct outcome.
+Identify the value or condition sought and its beneficiary; what is included and excluded; what must not happen; which priorities may be traded and within what limits; and how success, partial completion, suspension, or termination is assessed. Keeping a condition stable can be the objective. Producing a new artifact is not required.
+
+For a descriptive specification, distinguish the stated objective from observed incentives and actual outcomes. For a prescriptive specification, resolve conflicts between measures and constraints rather than leaving operators to choose silently.
+
+Ask whether the process should exist before preserving its present shape. Hammer's (1990) redesign argument is relevant here: an inherited procedure can obscure the actual outcome required. Specifying the inherited steps more precisely does not establish their value.
 
 ### Grounding
 
-In control theory the Objective is the **setpoint** — the reference value against which the measured process variable is compared to produce the error signal that drives corrective action (Åström & Murray, 2008). Without a reference, feedback is meaningless; there is nothing to be an error *from*. This is the mathematical form of the principle, and it applies to any closed-loop system regardless of substrate.
+Control theory provides the distinction between a reference condition and measured behavior (Åström & Murray, 2008). Quality management connects intended outputs with context, boundaries, and resources (ISO 9001:2015). Process redesign highlights trade-offs among time, cost, quality, and flexibility (Reijers & Limam Mansar, 2005). These are useful foundations; an organizational objective need not be reducible to a numeric setpoint.
 
-In management systems, ISO 9001:2015's process approach requires that process design begin from organisational context, interested parties, scope, objectives, and intended outputs, with risk-based thinking applied throughout. The Objective is not a slogan but a specification artefact.
+### Across the cases
 
-Two literatures explain why the *boundary* half of the principle matters as much as the *goal* half. First, Reijers and Limam Mansar (2005), surveying redesign heuristics, work from a four-dimensional model of process performance — **time, cost, quality, flexibility** — which they call the **devil's quadrangle**, because "improving upon one dimension may have a weakening effect on another." Their example: adding reconciliation tasks improves quality of service at the cost of timeliness. A redesign that does not name its permitted trade-off will make one silently. Second, and more sharply, an autonomous system given a setpoint without rigid boundaries will minimise its error signal by whatever means its environment permits — including means that damage variables nobody thought to measure. The boundary is what prevents the optimiser from exploiting the specification.
+- **M:** lend an eligible item to an eligible member with a traceable due date. Do not lend reference-only items. Queue speed never overrides eligibility. An unresolved eligibility question may end in a recorded refusal or pending review.
+- **A:** produce a source-supported collection of research records. Unsupported claims cannot be marked verified. Coverage may be reduced to preserve evidential quality. Unresolved records remain explicitly pending or excluded; completion does not require every record to be accepted.
+- **X:** maintain equipment within its approved operating condition. Availability may be reduced to meet inspection requirements. Equipment cannot be returned to service without the required release.
 
-The deepest critique of naive Objective-setting remains Hammer's (1990). Ford's North American accounts payable function employed more than 500 people; the initial objective was to rationalise the process, install new systems, and cut headcount by some 20% — to around 400. On discovering that Mazda ran an equivalent function with a total of five people, Ford recognised the objective itself was wrong. The old rule was "We pay when we receive the invoice." The reengineered rule was **"We pay when we receive the goods."** Ford instituted invoiceless processing: receiving checks arriving goods against an online purchase-order database, matching three data items rather than the previous fourteen, and the system issues payment with no invoice ever generated. The result was a 75% headcount reduction — not the 20% a conventional automation programme would have delivered. The lesson generalises: **the most common automation failure is the uncritical inheritance of a legacy objective.**
+### Failure if omitted
 
-### Across the three cases
-
-| | Objective as commonly stated (weak) | Objective properly specified |
-|---|---|---|
-| **L — NDA** | "Review NDAs faster." | Execute a mutually acceptable NDA within 3 business days, with zero deviations from the confidentiality-term and governing-law playbook without counsel approval; scope excludes NDAs attached to master agreements; speed may be traded for accuracy but never for playbook compliance; stop and escalate if the counterparty rejects a non-negotiable clause twice. |
-| **I — Reactor** | "Keep the reactor at temperature." | Hold vessel temperature at 185 °C ± 2 °C for the 40-minute hold phase; never exceed 210 °C under any condition; overshoot is preferred to undershoot up to 195 °C; abort the batch and vent if the ±2 °C band cannot be held for 90 consecutive seconds. |
-| **D — Support** | "Automate support tickets." | Resolve or correctly route 100% of inbound tickets within 15 minutes of receipt; never issue a refund above $200 or make a statement about contractual liability; deflection rate may be traded against customer-satisfaction score down to a floor of 4.2/5; hand to a human whenever confidence in intent classification falls below threshold. |
-
-### Failure mode if ignored
-
-**Misaligned automation.** The system optimises the wrong variable, at speed. Legacy inefficiency is encoded rather than removed — Hammer's "paving the cow paths." Where the operator is a capable optimiser, unbounded objectives additionally invite specification gaming.
+**Unclear or conflicting success.** Operators pursue different outcomes, optimize a measure at the expense of a constraint, or continue when termination is justified.
 
 ### Review questions
 
-1. What value is delivered, to whom, and how would an outsider verify it was delivered?
-2. What is explicitly *out* of scope?
-3. What must never happen, even if it would achieve the goal faster?
-4. Which of cost, time, quality, flexibility may be sacrificed, and to what floor?
-5. Under what conditions is *not completing* the correct outcome?
-6. If we were designing this from a blank sheet today, would this objective exist at all?
+1. What outcome or maintained condition is sought, for whom, and how can it be assessed?
+2. What is outside the boundary? What must never happen?
+3. Which trade-offs are allowed, with what limits and precedence?
+4. What counts as success, partial completion, suspension, or justified termination?
+5. Are we specifying needed work or preserving an inherited procedure without examining it?
 
 ---
 
-## 3. Occurrence — Under what conditions may execution begin or continue?
+## 3. Occurrence — Specify conditions for activity
 
-> **The Occurrence is the complete set of conditions — event, state, data, resource, and authority — that must hold for the process to be permitted to act.**
+> **State the events, states, prerequisites, authority, and timing conditions under which activity begins, continues, pauses, resumes, or ends.**
 
-### The Rule
+### Required content
 
-Occurrence is not merely *when*. It is the conjunction of a **trigger** (the event or state change that proposes execution), **readiness** (the data, resources, and preconditions that must be present), **authorisation** (the permission under which action is legitimate), and a **timing window** (the period within which acting is correct). A process should never run blindly; each of these four can independently make execution wrong.
+Distinguish a **trigger** proposing activity, **readiness** making it possible and appropriate, **authorization** making it legitimate, and a **timing window** making it timely. State which conditions must remain true and what changes require suspension or reassessment. If a condition is not applicable, explain why.
+
+Identify situations requiring different treatment and where they are distinguished. Classification may belong after admission in Order; the initial trigger does not have to classify every case. What matters is that a required distinction is available before the decision depending on it.
 
 ### Grounding
 
-The distinction between **open-loop and closed-loop** activation is foundational. An open-loop (feedforward) trigger is independent of process state — a boiler on a timer heats regardless of building temperature and cannot compensate for disturbance. A closed-loop trigger is state-dependent: the thermostat fires on deviation from setpoint (Åström & Murray, 2008). Most brittle automations are open-loop triggers imposed on closed-loop realities.
+BPMN start events and CMMN sentries distinguish events from enabling conditions. Safety analysis also separates action not provided when needed, action provided in an unsafe context, wrong timing or ordering, and inappropriate duration (Leveson, 2011; Leveson & Thomas, 2018).
 
-Process notation makes the composite structure explicit. BPMN 2.0 formalises initiation through typed **start events**; CMMN 1.1 introduces the **sentry**, which explicitly combines an *event part* and a *condition part* — a direct notational admission that trigger and readiness are separate things that must both hold.
+Ashby's (1956) requisite variety and Conant and Ashby's (1970) regulator argument motivate checking whether available distinctions and responses fit relevant environmental variation. They do not establish a numerical failure rate from a count of case types alone.
 
-Safety analysis supplies the failure taxonomy. Leveson's STPA (Leveson, 2011; Leveson & Thomas, 2018) classifies unsafe control actions into four kinds: a control action *not provided* when needed; provided when it *causes a hazard*; provided at the *wrong time or in the wrong order*; and applied for *too long or stopped too soon*. Three of these four are Occurrence failures, and they are not reducible to one another — which is why "when does it start" is too weak a formulation.
+### Across the cases
 
-The depth limit on Occurrence design comes from cybernetics. Ashby's (1956) **Law of Requisite Variety** — "only variety can destroy variety" (§11/11) — holds that a regulator can compensate for disturbance only insofar as its own range of distinguishable responses matches the range of disturbances the environment can produce. Ashby's own illustration is exact: a press photographer facing twenty subjects distinct in exposure and distance needs a camera with at least twenty distinct settings. Applied to triggering, this means a system's sensing and trigger logic must be at least as differentiated as the situations it must tell apart. Conant and Ashby (1970) sharpen this further: every good regulator of a system must be a model of that system. A trigger condition is, in miniature, a model of the environment; where that model is coarser than reality, false positives and missed signals are not bugs but arithmetic.
+- **M:** a member requests a loan; the clerk has the item and current paper membership record; the lending rules authorize the loan; the desk is open. Pause if eligibility cannot be established.
+- **A:** a record arrives in the intake collection; its source and provenance are accessible; the assessor has permission to update the collection; processing occurs before the collection deadline. Suspend affected work if source access or required authority is lost.
+- **X:** a service interval or condition alert initiates assessment; equipment identity and condition history are available; isolation authority is confirmed. Work resumes only when the specified access and safety conditions hold.
 
-### Across the three cases
+### Failure if omitted
 
-**L — NDA.** *Trigger:* document arrives in the legal intake mailbox. *Readiness:* it is actually an NDA and not a superseded draft; counterparty entity is identified and not on the sanctions list; the requesting business unit is named. *Authorisation:* requester is entitled to initiate a contracting action. *Window:* not during a live M&A quiet period, where a separate process governs.
-
-**I — Reactor.** *Trigger:* charge complete and agitator confirmed running. *Readiness:* thermocouple redundancy healthy, coolant loop pressurised, vessel level within band. *Authorisation:* batch record released by QA. *Window:* the hold phase, and only after ramp completes — heating applied at the wrong phase is a distinct hazard from heating not applied at all.
-
-**D — Support.** *Trigger:* new ticket created. *Readiness:* customer account resolved, entitlement verified, conversation history retrieved, required backend APIs responding. *Authorisation:* the agent's action scope for this customer tier. *Window:* not while a related incident is open, where responses must be centrally coordinated.
-
-### Failure mode if ignored
-
-**Blind or brittle activation.** The process fires on incomplete state, fires when it should not, fires at the wrong moment, or fails to fire at all. Where environmental variety exceeds trigger variety, this is systematic rather than occasional (Ashby, 1956).
+**Inappropriate activation or continuation.** Work starts without prerequisites, continues after conditions change, occurs too early or too late, or fails to start when needed.
 
 ### Review questions
 
-1. What event proposes execution — and is that event closed-loop or open-loop with respect to actual state?
-2. What must be *present and true* for action to be safe, beyond the trigger firing?
-3. Under whose authority does this run, and is that authority checked at runtime?
-4. Is there a period during which acting would be wrong even though the trigger is valid?
-5. Can the trigger logic distinguish every situation that requires a different response? If not, where does it collapse distinct cases?
-6. Which is worse here — a false start or a missed start — and does the design reflect that asymmetry?
+1. What proposes activity, and what additional conditions permit it?
+2. Which conditions must remain true, and when are they reassessed?
+3. What permits suspension, resumption, and ending?
+4. Where are materially different cases distinguished before action depends on that distinction?
+5. What is the response to missing information or an uncertain condition?
 
 ---
 
-## 4. Order — What must be true before what?
+## 4. Order — Specify dependencies and decision rights
 
-> **The Order is the dependency structure of the process: what must precede what, what may proceed concurrently, where flows must synchronise, what completion means, and which operator holds each step.**
+> **State what depends on what, which state transitions are permitted, how concurrent work coordinates, and which roles may perform and decide each part.**
 
-### The Rule
+### Required content
 
-Order is not a list of steps. It is the encoded resolution of dependencies. Specify the *dependency graph* rather than the *step sequence*: over-specifying sequence removes legitimate concurrency and makes the process brittle, while under-specifying it permits incoherent states. Order must additionally assign each step to an operator at a defined level of autonomy.
+Specify essential dependencies without prescribing unnecessary method. A sequence is appropriate where order matters; permitted flexibility should remain explicit where several methods satisfy the same requirements.
 
-### Grounding
-
-**Coordination theory** provides the conceptual core. Malone and Crowston (1994) define it in one line: *"Coordination is managing dependencies between activities."* The definition implies a distinction the rest of this principle rests on — between the work that directly produces the intended result, and the additional work of making that production interlock. Automation programmes characteristically optimise the former and neglect the latter, then fail at the seams. Crowston (1997) applies this to process design; Malone et al. (1999) give the three-way dependency classification used here:
-
-| Dependency | Arises when | Order must therefore specify |
-|---|---|---|
-| **Flow** | "one activity produces a resource that is used by another activity" | That downstream work waits until the upstream output **exists** (prerequisite), **has been made available** (accessibility), and is **usable by the consuming activity** (usability) — Malone et al.'s own decomposition of flow |
-| **Sharing** | "multiple activities all use the same resource" | Scheduling and contention handling — first-come/first-serve, priority order, budgeted allocation, managerial decision, or bidding |
-| **Fit** | "multiple activities collectively produce a single resource" | Standardisation and integration rules ensuring the independently produced parts compose |
-
-**Formal workflow theory** explains why sequence alone is inadequate. Van der Aalst's (1998) application of Petri nets to workflow management models processes in terms of *states*, *enabling conditions*, concurrency, synchronisation, and **soundness** — the property that a process can always terminate properly with no dangling work. The workflow patterns literature (van der Aalst et al., 2003; Russell et al., 2016) catalogues the control-flow constructs a naive linear list cannot express: parallel split and synchronising merge, discriminators, multiple instances, cancellation regions, deferred choice. If your Order can express only "then," it cannot express most real processes.
-
-**Function allocation** determines who executes each node. Early treatments posed this as a binary — which tasks suit humans, which suit machines — a framing now understood as too coarse to design with. Its successors are essential. Sheridan and Verplank (1978) introduced a **ten-level continuum of automation**, from the computer offering no assistance through to the computer deciding and acting while ignoring the human entirely. Parasuraman, Sheridan and Wickens (2000) then made the decisive refinement: automation level is not a single property of a system but is set **independently across four stages** — information acquisition, information analysis, decision selection, and action implementation.
-
-This yields the practical rule: **assign a level of automation per stage, per step — never per system.** A well-designed process is routinely level 10 at information acquisition, level 4 at decision selection, and level 1 at exception handling. "Is this process automated?" is the wrong question; the framework replaces it with a matrix.
-
-A final note: coordination need not be explicit. **Stigmergic** coordination — where operators coordinate through traces left in the shared work itself rather than through direct communication — is a legitimate and often superior mechanism, observed in biological systems and in large-scale distributed human work such as Wikipedia editing (Rezgui, Crowston & Jullien, 2018). Automated systems can exploit this by writing state into the artefact rather than into a message bus.
-
-### Across the three cases
-
-**L — NDA.** *Flow:* clause extraction cannot begin until the document is OCR'd and identified; signature cannot execute until both redline approval and internal counter-approval exist. *Sharing:* counsel's attention is the scarce resource, requiring a prioritised queue. *Fit:* the executed PDF, the CLM metadata record, and the obligations register must be mutually consistent. *Allocation:* extraction at level 10, playbook deviation judgement at level 4 (system proposes, counsel approves), novel-clause negotiation at level 1.
-
-**I — Reactor.** *Flow:* ramp precedes hold precedes cooldown; the safety interlock's authority precedes all of them and is not sequenced but *superordinate*. *Sharing:* a shared coolant header across vessels demands allocation logic. *Fit:* the batch record must reconcile with process historian data for release. *Allocation:* loop control at level 10, batch abort at level 6 (system acts after a bounded veto window), deviation investigation at level 1.
-
-**D — Support.** *Flow:* intent classification precedes tool selection precedes action; entitlement check precedes any account mutation. *Sharing:* rate-limited backend APIs and the human escalation queue. *Fit:* the customer-facing reply, the ticket record, and any account change must tell the same story. *Allocation:* retrieval at level 10, refunds under $50 at level 7 (act and inform), refunds above that at level 5 (act only on approval).
-
-### Failure mode if ignored
-
-**Coordination failure.** The process breaks at the joints rather than at the steps — work proceeds on stale inputs, resources deadlock, independently correct outputs fail to compose, and no operator is accountable for the seam. Where allocation is unspecified, responsibility gaps open exactly where judgement is most needed.
-
-### Review questions
-
-1. What are the flow, sharing, and fit dependencies — and which are currently managed only by someone remembering?
-2. What may legitimately run in parallel that the current design serialises?
-3. Where must concurrent branches synchronise, and what happens if one never arrives?
-4. What does *complete* mean, formally? Can the process reach a state from which it can neither proceed nor properly terminate?
-5. For each step, what level of automation applies at each of acquisition, analysis, decision, and action?
-6. Is coordination carried by explicit messages, or by traces in the shared artefact — and is that deliberate?
-
----
-
-## 5. Option — What happens when reality diverges from the nominal path?
-
-> **The Option is the designed response to deviation: the variants, exception paths, recovery procedures, escalation routes, and safe-stop states that govern the process when the primary path is unavailable.**
-
-### The Rule
-
-Deviation is a normal operating state, not an edge case. A process must specify three distinct classes of response: **variants** (legitimate alternative routes to the same objective), **exceptions** (handling for conditions outside assumption), and **recovery** (return to a consistent state, escalation to a more capable operator, or safe stop). Crucially, the process must degrade *gracefully* — stepping down through progressively lower levels of automation — rather than abdicating abruptly.
-
-### Grounding
-
-Ashby's law again sets the theoretical floor: no regulator can destroy more variety than it possesses (Ashby, 1956). Since no designer can enumerate the variety of an open environment, every real automation will encounter states it cannot handle. The Option dimension is therefore not defensive programming; it is the acknowledgement of a proven structural limit. Escalation to a human is the standard mechanism for importing variety the system does not have.
-
-The literature that matters most here is Bainbridge's (1983) *Ironies of Automation* — the single most important paper in this framework, and the one most often ignored by builders of automation. Bainbridge observed that designers automate the routine and predictable portion of work precisely because they can, and leave to the human operator exactly the residue they could not anticipate. This produces a set of compounding ironies:
-
-- **The designer's ironies.** Bainbridge names two. First, the designer who regards the operator as "unreliable and inefficient" is themselves a major source of operating problems — "designer errors can be a major source of operating problems." Second: "the designer who tries to eliminate the operator still leaves the operator to do the tasks which the designer cannot think how to automate." The residue is, by construction, the hardest part of the job.
-- **Skill degradation.** "Physical skills deteriorate when they are not used, particularly the refinements of gain and timing. This means that a formerly experienced operator who has been monitoring an automated process may now be an inexperienced one." And the moment of takeover is the worst possible moment: "when manual take-over is needed there is likely to be something wrong with the process, so that unusual actions will be needed to control it, and one can argue that the operator needs to be *more* rather than less skilled, and *less* rather than more loaded, than average."
-- **The vigilance problem.** The limit is specific, not vague: "it is impossible for even a highly motivated human being to maintain effective visual attention towards a source of information on which very little happens, for more than about half an hour." Any design that assumes sustained human monitoring of a reliable system is assuming something people cannot do.
-- **Cold context on takeover.** Bainbridge anticipates the situation-awareness literature directly. The operator's working knowledge of process state "takes time to build up" — manual operators would arrive "quarter to half an hour before they are due to take over control, so they can get this feel for what the process is doing." Under automation, "the operator who has to do something quickly can only do so on the basis of minimum information."
-- **Loss of situation awareness.** Endsley (1995) defines situation awareness as perception of the elements in the environment, comprehension of their meaning, and projection of their future state. Endsley and Kiris (1995) then demonstrated the automation consequence experimentally: operators of a fully automated system suffered measurably worse post-failure decision times than those at *intermediate* levels of automation, attributed to loss of SA under passive information processing. When automation disconnects, the human is thrust into control with *cold context* — unaware of what the system was attempting, why it stopped, or what the state now is.
-
-  This is the strongest empirical warrant in the framework for the rule below: **intermediate automation levels preserved situation awareness where full automation destroyed it.** Stepping down is not a design preference; it is the measured difference between an operator who can recover and one who cannot.
-
-Bainbridge closes with the irony that matters most for deciding where to invest: **"it is the most successful automated systems, with rare need for manual intervention, which may need the greatest investment in human operator training."** The better the automation, the more the residual human role costs to maintain.
-
-#### A necessary correction: degrade the level, not the performance
-
-The term *graceful degradation* is used loosely in automation writing, and Bainbridge explicitly attacks it: "'Graceful degradation' of performance is quoted in 'Fitts Lists' of man-computer qualities as an advantage of man over machine. This is **not** an aspect of human performance to be aimed for in computers, as it can raise problems with monitoring for failure; **automatic systems should fail obviously.**" Her reason is concrete: "automatic control can 'camouflage' system failure by controlling against the variable changes, so that trends do not become apparent until they are beyond control."
-
-This is a real constraint on the Option principle, and it resolves into a distinction the framework must make explicit:
-
-- **Degrading performance quietly is forbidden.** A system that absorbs a developing fault by working harder, while its outputs still look nominal, is hiding the failure until it is unrecoverable. Bainbridge is right, and this is the more common failure in software automation, where retries and fallbacks routinely mask a deteriorating dependency.
-- **Degrading the level of automation explicitly is required.** Endsley and Kiris's result stands: handing control to a human who has been out of the loop produces worse outcomes than keeping them at an intermediate level. Stepping down is correct — provided the step-down is *announced*, not silent.
-
-**The two combine into one rule: fail obviously, hand over gradually.** The transition must be loud and the handover must be warm. An automation that degrades quietly violates Bainbridge; one that disconnects abruptly violates Endsley and Kiris. Most real systems manage to do both.
-
-The design consequence is therefore precise: **an automation that throws an error and abdicates has not implemented Option; it has implemented abandonment.** Compliant Option design requires (a) stepping down through automation levels rather than dropping out, and making each step visible rather than silent, (b) handing over a full **reasoning trace** — what was attempted, what state obtains, what specifically is required — so the receiving operator inherits situation awareness rather than a stack trace, and (c) keeping skills warm. Bainbridge's own prescription for (c) is direct: "allow the operator to use hands-on control for a short period in each shift. If this suggestion is laughable then simulator practice must be provided."
-
-Two further sources broaden the dimension. Process flexibility research (van der Aalst et al., 2009) shows that real processes require *several distinct* flexibility mechanisms — by design, by deviation, by underspecification, by change — rather than a single notion of alternate path; CMMN exists as a standard precisely because much work is case-based and cannot be pre-sequenced at all. And the NIST AI Risk Management Framework (NIST, 2023) adds, for AI-operated processes, that response, recovery, and the ability to *disengage or deactivate* a system behaving inconsistently with its intended use are required controls, not optional features.
-
-### Across the three cases
-
-**L — NDA.** *Variant:* if the counterparty insists on their paper, switch to the reverse-review playbook rather than failing. *Exception:* an unrecognised clause type suspends automated redlining and routes to counsel with the extracted text, the playbook rule it could not match, and the negotiation history. *Recovery:* if e-signature fails, fall back to a manual countersignature path; if the counterparty is added to the sanctions list mid-negotiation, hard stop and notify compliance. *Anti-irony measure:* counsel reviews a sampled 5% of fully automated NDAs to retain feel for playbook drift.
-
-**I — Reactor.** *Variant:* if the primary coolant loop degrades, transfer to the secondary at reduced ramp rate. *Exception:* on thermocouple disagreement, drop from closed-loop control to operator-supervised manual with both readings displayed — a step down, not a disconnect. *Recovery:* an unrecoverable excursion triggers a controlled abort and vent, a designed safe state rather than a halt. *Anti-irony measure:* periodic simulator runs and scheduled manual-mode operation, standard practice in process industries for exactly Bainbridge's reasons.
-
-**D — Support.** *Variant:* if the knowledge base lacks an answer, search resolved tickets before escalating. *Exception:* on low classification confidence, the agent does not guess — it asks one clarifying question, then escalates. *Recovery:* on backend API failure, acknowledge to the customer with a realistic ETA rather than failing silently; on detection of anomalous behaviour, disengage the agent for that queue entirely (NIST, 2023). *Handover quality:* escalation carries the agent's interpretation, actions taken, tools called, and the specific blocking condition — not "escalated to human."
-
-### Failure mode if ignored
-
-**Brittleness compounding into catastrophe.** The system runs efficiently until first contact with an unmodelled disturbance, then fails abruptly onto an operator who has neither the practice nor the situation awareness to recover. The failure is not the exception; it is the handover.
-
-### Review questions
-
-1. What are the legitimate alternative routes to this objective, and are they designed or improvised?
-2. For each dependency in Order, what happens if it is not satisfied?
-3. Does the system step down through automation levels, or does it drop out?
-4. What exactly does the receiving operator see at the moment of handover — and could they act on it without further investigation?
-5. What is the safe stop state, and is stopping actually available as an outcome?
-6. Can this system be disengaged, and by whom, without a deployment?
-7. If this automation runs flawlessly for a year, will anyone still be able to do it manually?
-
----
-
-## 6. Observation — What evidence does execution produce, and how does that evidence change the process?
-
-> **Observation is the requirement that a process render itself legible: emitting evidence sufficient to determine what happened, judge it against the Objective, and revise the process itself.**
-
-### The Rule
-
-Observation has three obligations, and most implementations satisfy only the first. **Record**: emit semantically meaningful, complete, trustworthy event data. **Judge**: compare actual behaviour against the intended model and against the Objective. **Revise**: feed the resulting findings into a loop that actually changes the specification. Logging without conformance checking is passive. Conformance checking without a revision loop is theatre.
-
-### Grounding
-
-The **control-theoretic form** of Observation is the feedback controller. A PID controller computes the error between setpoint and measured variable and corrects on three distinct time horizons (Åström & Murray, 2008), which translate directly into process terms:
-
-- **Proportional** — response to the *current* magnitude of deviation. Organisationally: immediate intervention when a metric breaches threshold. Too much gain oscillates; too little is unresponsive.
-- **Integral** — response to *accumulated* past error. This term exists because proportional control leaves a residual steady-state error. Organisationally: the chronic friction that no single incident justifies fixing but that costs enormously across thousands of iterations. Correcting the integral term means structural redesign, not intervention.
-- **Derivative** — response to the *rate of change* of error, anticipating future deviation. Organisationally: leading indicators and predictive intervention before the process fails.
-
-Most organisational monitoring is purely proportional. The integral and derivative terms name the two most commonly missing feedback capabilities.
-
-The **evidence form** of Observation is best specified by the Process Mining Manifesto (van der Aalst et al., 2011), whose guiding principles are unusually well suited to this dimension: event data should be treated as **first-class citizens**, not incidental exhaust; log extraction should be **driven by questions**, not by what happened to be instrumented; events should be **relatable to model elements**, enabling conformance checking rather than mere counting; models are **purposeful abstractions**, so no single model serves all questions; and process mining should be a **continuous** activity, not a one-off project. Observation therefore imposes a data-quality obligation: an event log that cannot be tied to model elements cannot support diagnosis, only description.
-
-The **organisational form** of Observation is environmental scanning, and it is fractal — the same requirement applies to a script, a department, and a corporation. Observation must serve three distinct functions, of which most implementations supply only the second: dampening oscillation between adjacent processes; monitoring and optimising current operations; and scanning the *external environment* for changes that invalidate the process's premises. A process that monitors only its own internal metrics is blind in exactly the dimension that determines whether it should continue to exist.
-
-Finally, Observation is where the framework closes: its output is an input to Objective. This is what makes Five O a loop rather than a checklist.
-
-### Across the three cases
-
-**L — NDA.** *Record:* cycle time by stage; which playbook clauses were most often challenged; deviation approvals and by whom; escalation reasons. *Judge:* conformance of actual negotiation paths against the intended playbook — a divergence that recurs is not non-compliance, it is a signal that the playbook is wrong. *Revise:* quarterly playbook amendment driven by the top challenged clauses; S4 scanning for regulatory changes that invalidate standard terms.
-
-**I — Reactor.** *Record:* full process historian trace at control-loop resolution. *Judge:* proportional (excursion alarms), integral (slow drift in achieved hold temperature across batches indicating fouling or sensor degradation), derivative (rate-of-rise trending toward interlock). *Revise:* controller retuning, maintenance scheduling, and periodic re-examination of whether the setpoint itself is still optimal for the product.
-
-**D — Support.** *Record:* per-ticket trace of intent classification, confidence, tools called, actions taken, escalation reason, and outcome. *Judge:* conformance of actual agent trajectories against intended flows; deflection rate against the CSAT floor named in the Objective; escalation-reason clustering. *Revise:* the highest-frequency escalation reason is the next thing to build; a rising rate of a previously-rare failure mode is a derivative signal; a shift in inbound topic mix is an S4 signal that the product changed.
-
-### Failure mode if ignored
-
-**Stagnation and undetected drift.** The process suffers chronic steady-state error nobody attributes to it, and continues executing correctly against premises that have quietly become false. Because open-loop processes fail silently rather than loudly, this failure mode is typically discovered by its consequences.
-
-### Review questions
-
-1. Could you reconstruct what happened in a single execution six months later, from the evidence alone?
-2. Can events be tied to specific elements of the process model, or only counted?
-3. Which metrics correspond to proportional, integral, and derivative response — and are all three present?
-4. What is the mechanism by which an observation changes the specification, and what is its lead time?
-5. Who reads this, and what are they authorised to change?
-6. What would tell you that this process should no longer exist?
-
----
-
-## 7. Cross-cutting invariants
-
-The five principles are dimensions of a process. Two further conditions are not dimensions but **invariants**: they must be specified *within every one of the five*, and a Five O specification is incomplete without them. Making them cross-cutting rather than a sixth O is deliberate — they are not a stage of the process, they are properties every stage must possess.
-
-### Invariant I — Ownership and Authority
-
-> **Every O must name who owns it and under what authority it acts.**
-
-The governance literature is unambiguous that specification completeness without institutional accountability does not survive contact with an organisation. Spanyi (2015) makes the operational case that consistent and sustainable execution requires defined ownership and active management practice, not merely a documented process. The NIST AI RMF (2023) makes this a formal requirement for AI-operated processes: documented roles and responsibilities, executive accountability, feedback channels from affected parties, and the authority to disengage a misbehaving system.
-
-Concretely, this means every O carries an owner and an authority statement: who may change the **Objective**; who authorises an **Occurrence**; who owns each node and each hand-off in the **Order**; who is on the receiving end of each **Option** escalation, and are they staffed at that hour; who reads the **Observation** output and what are they empowered to change.
-
-The most common real-world failure is an escalation path terminating in a queue nobody owns.
-
-### Invariant II — Objects and Resources
-
-> **Every O must name the objects it acts upon and the resources it consumes.**
-
-A process specification that does not identify its objects is not executable; one that does not identify its resources is not schedulable. This is what ISO 9001:2015 means by determining the inputs required and outputs expected of each process, and what the WfMC Workflow Reference Model (Hollingsworth, 1995) captures by treating human and IT resource assignment as a first-class element of process definition alongside control flow.
-
-Concretely: what object does the **Objective** transform, and what state must it reach; what data and resources must be present for **Occurrence**; what resources are contended in the **Order**'s sharing dependencies; what resources does an **Option** path require — and are they available precisely when the primary path has failed, which is often when they are not; what objects and events does **Observation** record, with what identity and what semantics.
-
-The most common real-world failure here is a fallback path that depends on the same resource whose failure triggered it.
-
----
-
-## 8. Applying the framework
-
-The Five O framework is best used as a **front-end completeness test and design-review scaffold**, not as a replacement for domain methods. In practice:
-
-1. **Interrogate the Objective before anything else** — including whether the process should exist. This is the Hammer step, and skipping it makes everything downstream efficient waste.
-2. **Specify Occurrence as trigger + readiness + authorisation + window**, and check each against STPA's four unsafe-control-action classes.
-3. **Model Order with the lightest notation that preserves the real dependencies** — Cherns's minimal critical specification: precise about *what* must be done, rarely about *how*. A dependency graph on paper is often enough; reach for BPMN when flow needs to be shared, DMN when decisions should be separated from flow, CMMN when work is genuinely case-based, and Petri-net soundness analysis when concurrency is complex enough that informal reasoning is unreliable.
-4. **Design Options for deviation classes, not for specific bugs** — variant, exception, recovery — and design the handover, not just the trigger for it.
-5. **Define Observation as an evidence model** before implementation, driven by the questions you will need to answer, rather than instrumenting whatever is convenient afterward.
-6. **Sweep the two invariants across all five**, naming an owner and the objects/resources for each.
-7. **Pilot, measure, check conformance, and return to step 1.**
-
-### Metrics by dimension
-
-Automation programmes routinely report a single figure — hours saved — which is uninformative about whether the automation is sound. A layered metric set follows directly from the framework:
-
-| Dimension | What to measure |
+| Dependency | Required specification |
 |---|---|
-| Objective | Outcome achievement; constraint violations; realised trade-off position against declared floors |
-| Occurrence | Trigger precision and recall; false starts; readiness failures; authorisation failures; timing violations |
-| Order | Cycle time and waiting time; rework loops; synchronisation failures; conformance to intended dependency logic |
-| Option | Exception frequency by class; recovery success rate; escalation rate; handover quality; time-to-human-competence after handover |
-| Observation | Event completeness and semantic quality; conformance-check coverage; time from signal to specification change |
-| Invariants | Unowned escalation paths; unstaffed authority; resource contention incidents; fallback paths sharing a failure domain with the primary |
+| **Flow** — one activity needs another's output | Required input state, availability, and acceptance conditions. |
+| **Sharing** — activities need a limited resource | Allocation, priority, or contention resolution. |
+| **Fit** — independently produced parts must compose | Interfaces, compatibility checks, and responsibility for reconciliation. |
 
-### What the framework does not give you
+Identify permitted concurrency, synchronization, state changes, completion conditions, and responsibility at handovers. For relevant activities, distinguish who gathers information, interprets it, decides, and acts. Assign roles and limits of discretion; do not assume any of these functions belongs to a human or machine.
 
-Stated plainly, because a framework that does not name its limits invites misuse:
+### Grounding
 
-- **It does not tell you whether the process should exist.** It only forces the question (Hammer, 1990).
-- **It does not itself tell you how much formalisation is appropriate** — but the socio-technical literature does, and the framework should defer to it. Cherns's (1976) second principle, **minimal critical specification**, states the rule in two halves: "no more should be specified than is absolutely essential," and, positively, "identify what is essential." His operational test is the one to apply to a Five O specification: *"While it may be necessary to be quite precise about what has to be done, it is rarely necessary to be precise about how it is to be done."* He adds the diagnosis that matters — "it is a mistake to specify more than is needed because by doing so options are closed that could be kept open. This premature closing of options is a pervasive fault in design," including because over-specification "helps designers to get their own way."
+Malone and Crowston (1994) and Crowston (1997) treat coordination as management of dependencies. Workflow theory supplies constructs for parallel work, synchronization, cancellation, and termination (van der Aalst, 1998; van der Aalst et al., 2003; Russell et al., 2016). These provide stronger checks where informal dependency descriptions are inadequate.
 
-  Applied here: **Objective, Occurrence and Option should be specified tightly; Order should be specified only to the depth of its real dependencies.** A dependency graph is critical specification; a step-by-step script usually is not.
-- **It is not a notation.** It tells you what must be specified, not how to express it.
-- **It does not resolve the socio-technical question.** Trist and Bamforth (1951) documented what mechanisation did to the social structure of coal-getting: introducing machines to the coal face "caused the appearance of a new order… bringing fractionation of tasks, extension of sequence, role and shift segregation, small group disorganization and inter-group dependence." Their conclusion is the founding statement of socio-technical design — that a method must be reworked "so that a social as well as a technological whole can come into existence," by "restoring responsible autonomy to primary groups" and giving each "a satisfying sub-whole as its work task." Cherns (1976) turned this into nine design principles — compatibility, minimal critical specification, the socio-technical criterion, multifunctionality, boundary location, information flow, support congruence, design and human values, and incompletion — and Clegg (2000) extended them. Three bear directly on this framework and are used above: minimal critical specification (§8), the socio-technical criterion (below), and information flow. A fourth, **support congruence** — "systems of social support should be designed so as to reinforce the behaviors that the organization structure is designed to elicit" — the Five Os do not address at all. A process can be perfectly specified and still be defeated by an incentive that rewards the opposite behaviour.
+Cherns's (1976) minimal critical specification supports precision about essential requirements while retaining freedom over method. This is not a prohibition on detailed procedures: a method belongs in the specification when it is itself an essential requirement. Coordination can also occur through shared work artifacts rather than direct messages (Rezgui, Crowston & Jullien, 2018).
 
-  Cherns's **socio-technical criterion** also sharpens both Option and Observation: "variances, if they cannot be eliminated, must be controlled as near to their point of origin as possible," because when correction happens in a separate department long after the event, "the correction of the variance becomes a long loop, which is a poor design for learning." And his **information flow** principle states the rule the Observation dimension needs: information should go "in the first place to the point where action on the basis of it will be needed" — not upward by default.
+### Across the cases
 
-  A Five O specification can therefore be logically complete and still distribute discretion, visibility, and accountability in a way that people will not sustain.
+- **M:** eligibility is confirmed before a loan is authorized; the paper loan record is completed before the item leaves the desk. Clerks share the register under a stated queue rule. The lending supervisor decides disputed eligibility.
+- **A:** provenance review precedes acceptance; independent records may be assessed concurrently; synthesis waits for accepted records. The specialist assessor may resolve methodological ambiguity, but only the collection steward may authorize changes within the collection policy's stated limits.
+- **X:** isolation precedes inspection; independent checks may run concurrently; release waits for all required results. The technician supplies findings and the maintenance supervisor authorizes return to service.
 
-  One finding of theirs bears directly on the Ownership invariant. At the longwall face, dependencies ran one way and no group owned the seams between shifts; the result was not resolution but **mutual scapegoating** — "as the fillers do not exist as a responsible whole; they, as a group, are not there to take the blame, and the individual filler can always exempt himself… nothing is resolved and no one feels guilty." An unowned dependency does not stay neutral. It becomes a place where blame circulates and no correction occurs. That was observed in 1951 in a coal mine, and it is what an escalation path terminating in an unowned queue produces today.
-- **It does not substitute for domain rigor.** Where a dimension is safety-critical, use the discipline built for it.
+### Failure if omitted
+
+**Coordination failure.** Work uses stale or incomplete inputs, competes for resources without resolution, produces incompatible parts, or leaves responsibility unclear at a boundary.
+
+### Review questions
+
+1. What truly depends on what? What may proceed concurrently?
+2. Which states and transitions are allowed, including cancellation or pending work?
+3. What makes an output acceptable to its next consumer?
+4. Which roles gather, interpret, decide, and act, within what limits?
+5. Who resolves contention, conflicting results, or an incomplete handover?
 
 ---
 
-## 9. Summary
+## 5. Option — Specify alternatives and unresolved situations
 
-| Principle | Question | Core theory | Failure mode if ignored |
-|---|---|---|---|
-| **Objective** | What result counts as success, within what boundaries? | Control-theoretic setpoint (Åström & Murray); ISO 9001 process approach; BPR (Hammer); redesign trade-offs (Reijers & Limam Mansar) | Misaligned automation — efficient execution of the wrong goal |
-| **Occurrence** | Under what conditions may execution begin or continue? | Open vs. closed loop; BPMN start events; CMMN sentries; STPA unsafe control actions (Leveson); Law of Requisite Variety (Ashby) | Blind or brittle activation — acting on incomplete state, at the wrong time, or not at all |
-| **Order** | What must be true before what? | Coordination theory (Malone & Crowston; Crowston); Petri nets and workflow patterns (van der Aalst); function allocation (Sheridan & Verplank; Parasuraman et al.) | Coordination failure — the process breaks at the joints, not the steps |
-| **Option** | What happens when reality diverges? | Requisite variety (Ashby); Ironies of Automation (Bainbridge); situation awareness (Endsley); process flexibility; AI risk management (NIST) | Brittleness and catastrophic handover — the operator inherits a crisis with cold context |
-| **Observation** | What evidence does execution produce, and how does it change the process? | PID feedback (Åström & Murray); Process Mining Manifesto (van der Aalst et al.); environmental scanning | Stagnation and silent drift — correct execution against premises that became false |
-| *Invariant:* **Ownership & Authority** | Who owns this, and under what authority? | BPM governance (Spanyi); NIST AI RMF | Specification without accountability; escalation into an unowned queue |
-| *Invariant:* **Objects & Resources** | What does it act on, and what does it consume? | ISO 9001 inputs/outputs; WfMC Workflow Reference Model (Hollingsworth) | Unschedulable processes; fallbacks sharing a failure domain with the primary path |
+> **State permitted alternative routes and responses to deviations, unavailable dependencies, and situations beyond an operator's capability or authority.**
 
-**The Five O Principles describe the minimum complete specification of an automatable process: why it should exist, when it is permitted to act, how its dependencies govern action, how it responds when reality diverges from the nominal path, and how it observes itself well enough to improve. Their adequacy in practice depends on two cross-cutting conditions: clear ownership and explicit object and resource semantics.**
+### Required content
+
+Specify **variants** for legitimate alternative routes, **exceptions** for departures from assumptions, and **recovery** to an acceptable state. Define the applicable response when no specified route succeeds: pending work, transfer, controlled suspension, or safe termination. An abrupt halt is not always safe; a continuous process may require an active transition to a maintained safe condition.
+
+For each alternative, identify dependencies and shared causes of failure. A route needing an unavailable resource is not a usable fallback for that failure. Do not assume that doing nothing is dependency-free or safe.
+
+Specify which deviations, retries, and substitutions must be recorded or communicated, to which role, and when. Visibility should support decisions rather than indiscriminate notification.
+
+### Escalation and handover contract
+
+Every escalation specifies:
+
+1. The condition exceeding the current operator's capability or authority.
+2. The **escalation recipient**, its required capability and authority, and its availability.
+3. The information and state transferred: intended outcome, evidence, actions taken, current condition, and decision or action required.
+4. How receipt and responsibility are confirmed, within what time or condition limit.
+5. The response if the recipient is unavailable, refuses, cannot resolve the situation, or fails to acknowledge.
+
+The recipient may be an AI agent, a machine supervisor, a specialist team, or a person. The process owner receives an escalation only when assigned that role for the relevant situation. A different recipient with the same unresolved limitations does not establish a useful alternative. Escalation paths must not create indefinite transfer loops.
+
+Required capabilities must remain available for exceptional as well as routine activity. State how that availability is checked where it matters. Training, simulation, capability checks, and resource reservations are possible implementations, not universal prescriptions.
+
+### Grounding
+
+Process flexibility research distinguishes several ways to accommodate variation rather than a single fallback mechanism (van der Aalst et al., 2009). Ashby's (1956) variety argument motivates an explicit response to situations beyond the defined repertoire. Human factors research supplies important additional requirements when a handover involves people; those requirements are discussed as an application in §10 rather than imposed on every process.
+
+### Across the cases
+
+- **M:** a clerk passes disputed eligibility to the lending supervisor with the membership record and reason for uncertainty. If no supervisor is available before closing, record the request as pending and retain the item; do not issue the loan on an assumption.
+- **A:** an assessor transfers methodological ambiguity to the specialist assessor with source spans and checks already performed. Receipt must be acknowledged within the processing window. If unresolved by the deadline, retain the record as pending and exclude it from the accepted collection. Policy questions go separately to the collection steward within its bounded authority.
+- **X:** unavailable equipment access leads to rescheduling only if continued operation is permitted. Otherwise the designated operator maintains the specified safe condition. A handover carries isolation status and incomplete checks; it does not silently release equipment.
+
+### Failure if omitted
+
+**Unresolved deviation or abandoned responsibility.** Work proceeds by unsupported improvisation, transfers into an unowned queue, cycles between recipients, or stops in an unacceptable state.
+
+### Review questions
+
+1. What alternatives are permitted, and are their dependencies available in the relevant failure?
+2. What is the acceptable state while a situation remains unresolved?
+3. Does each escalation have a capable, authorized, available recipient and a bounded response to non-resolution?
+4. What evidence and responsibility move with a handover?
+5. How are material deviations made visible without obscuring important signals?
+
+---
+
+## 6. Observation — Specify evidence, evaluation, and revision
+
+> **State what evidence is needed to assess activity and outcomes, who evaluates it, and how findings can lead to changes in the process or its specification.**
+
+### Required content
+
+Observation has three duties: **record** the evidence required for the declared purpose; **judge** it against requirements and intended outcomes; and **revise** through an identified authority and change route when warranted. Findings may justify retaining the current requirements. Observation does not authorize an operator to change them on its own.
+
+Evidence may be a paper record, inspection, measurement, acknowledgment, sample, or event history. State its meaning, relationship to the activity, quality requirements, accessibility, and retention where relevant. Choose evidence from the questions to be answered, rather than requiring a particular logging technology.
+
+For recurring or continuous work, consider immediate deviations, accumulated friction, and trends. For finite work, completion evidence and a closeout review may be sufficient. State why an omitted horizon is not applicable. Specify how changes outside the process that invalidate its assumptions are recognized where that is relevant.
+
+### Grounding
+
+The Process Mining Manifesto emphasizes purposeful models and evidence related to process elements (van der Aalst et al., 2011). Its event-log methods are one implementation of this broader evidence requirement. Control theory provides useful distinctions between current, accumulated, and changing error (Åström & Murray, 2008); these are an analogy for review horizons, not a requirement to implement a PID controller in every process.
+
+### Across the cases
+
+- **M:** paper records identify the item, member, due date, clerk, and exception decision. The library services manager reviews unresolved requests weekly and may revise lending procedure within policy limits.
+- **A:** provenance, evidence spans, decisions, transfers, and unresolved reasons remain associated with each record. The collection steward compares results with the declared evidence criteria at closeout and may revise assessment rules only within its assigned authority. A short, one-time collection need not have continuous trend monitoring.
+- **X:** inspection findings, release decisions, and condition history support both individual release checks and trend review. The process owner authorizes maintenance-specification changes through the defined approval route.
+
+### Failure if omitted
+
+**Unassessable behavior or undetected drift.** Outcomes cannot be checked, deviations cannot be reconstructed at the required level, or findings have no route to a decision about revision.
+
+### Review questions
+
+1. What questions must the evidence answer, and at what level of reconstruction?
+2. Who evaluates it, when, and with what authority to respond?
+3. Which review horizons apply to this process, and why?
+4. What findings require reassessment of the objective or assumptions?
+5. How is a revision authorized, identified, and communicated to affected roles?
+
+---
+
+## 7. Cross-cutting requirements
+
+### Ownership and authority
+
+Within every O, identify responsibility and decision rights. A process owner coordinates responsibility for the whole; activity operators and escalation recipients retain their explicitly assigned duties. Role assignments include the capabilities, permissions, resources, and availability required to fulfil them. The assignment must be assessable, not merely a name in a box.
+
+Spanyi (2015) emphasizes ownership and active management. Trist and Bamforth (1951), Cherns (1976), and Clegg (2000) explain why relationships among work, discretion, information, and responsibility matter. These organizational findings are especially relevant when people fill roles; they do not imply that the abstract roles must be human.
+
+### Objects and resources
+
+Within every O, identify what is acted on, the states that matter, and the resources consumed or required. Include identity and input/output semantics, resource contention, and dependencies shared by alternatives. A process may transform information or maintain a condition rather than produce a physical item.
+
+ISO 9001:2015 and the WfMC Workflow Reference Model (Hollingsworth, 1995) provide related treatments of inputs, outputs, resources, and assignments. Resource availability is a condition to establish, not something a specification guarantees by naming it.
+
+---
+
+## 8. Qualities of a good specification
+
+The Five Os identify topics. The following qualities apply across all of them:
+
+1. **Declared status.** Separate observed practice, requirements, assumptions, recommendations, examples, and unresolved decisions. Identify scope and the applicable version or effective period.
+2. **Consistent meaning.** Define important terms, units, identities, and states. Resolve conflicting rules or specify precedence. Check that metrics do not reward violating constraints.
+3. **Assessable requirements.** State what evidence could establish satisfaction or violation. Qualitative review is legitimate when its criteria and reviewing role are explicit; not everything requires a numerical threshold.
+4. **Essential detail.** Specify outcomes, constraints, dependencies, and decision rights precisely enough for the purpose. Prescribe method only when it is itself required. Do not infer the need to split a process from word count alone.
+5. **Explicit uncertainty.** Keep unknowns visible, identify who can resolve them, and state what activity is blocked meanwhile. Document assumptions and the consequence of their failure.
+6. **Composition.** Define interfaces and acceptance conditions between subprocesses. State a rule once at the level responsible for it and reference it elsewhere. Reassess conditions that can change after a handover; a prior check is not an eternal guarantee.
+7. **Governed revision.** Identify who may change requirements, within what limits, and how changes reach affected roles. Evidence supporting a change is separate from authority to make it.
+
+Completeness is relative to declared scope and purpose. A specification covering all five dimensions can still be inconsistent or infeasible. Review requirements with the relevant domain methods and assess each proposed implementation separately.
+
+---
+
+## 9. Applying the framework
+
+1. Declare the specification's purpose, scope, and descriptive or prescriptive status.
+2. Examine the intended outcome and whether the process is needed.
+3. Address each O and both cross-cutting requirements at a proportionate level of detail.
+4. Assign roles without assumptions about the kind of entity filling them. Check both wholly manual and wholly AI or machine execution for hidden terminology assumptions.
+5. Review consistency, evidence, uncertainty, and composition. Record justified non-applicability and unresolved gaps.
+6. Assess candidate implementations against capabilities, authority, interfaces, resources, and evidence requirements. A useful specification does not prove feasibility.
+7. Compare actual activity with the specification and route findings through the stated revision authority.
+
+Use the lightest notation that expresses the requirements. Prose and tables may suffice; dependency graphs, BPMN, DMN, CMMN, or formal analysis may be appropriate for more demanding cases. These are representation choices, not additional Os.
+
+See [examples/README.md](./examples/README.md) for manual, AI-only, and mixed application examples, and [skills/5o-process-specification](./skills/5o-process-specification) for a reusable authoring workflow.
+
+---
+
+## 10. Specialized application: automation and AI
+
+Automation uses the same specification dimensions and adds implementation-specific questions. The following are **conditional application guidance**, not requirements for every process.
+
+Where functions are divided between people and machines, Sheridan and Verplank (1978) and Parasuraman, Sheridan and Wickens (2000) provide ways to describe degrees of assistance and autonomy separately for information acquisition, analysis, decision, and action. Such a grid can refine role assignments; it is not the definition of Order.
+
+Where an exceptional transfer goes to a person who has been out of the loop, Bainbridge (1983), Endsley (1995), and Endsley and Kiris (1995) highlight skill retention, attention, and situation awareness. Assess what context and practice that recipient needs. An appropriately designed intermediate mode may help; a universal requirement to descend through automation levels would be inappropriate, particularly when an immediate safe transition is required.
+
+Where AI performs activities, the NIST AI RMF (2023) and ISO/IEC 42001:2023 provide additional governance considerations. Actual tools, permissions, uncertainty handling, and untrusted inputs must be assessed in the target environment. A prompt requiring escalation does not create a communication channel or an available recipient.
+
+Automation case studies, including Lacity and Willcocks (2016), are application evidence. They do not demonstrate that Five O is an exhaustive universal theory or that a specified process is automatically implementable. The prompt and skill-design workflows in this repository are specialized applications of the general framework.
+
+---
+
+## 11. Summary
+
+| Principle | Required specification | Failure class |
+|---|---|---|
+| **Objective** | Outcomes, limits, trade-offs, and acceptable endings | Unclear or conflicting success |
+| **Occurrence** | Conditions permitting activity throughout its lifecycle | Inappropriate activation or continuation |
+| **Order** | Dependencies, transitions, coordination, and decision rights | Coordination failure |
+| **Option** | Alternatives, deviations, escalation contracts, and unresolved states | Abandoned or unresolved responsibility |
+| **Observation** | Evidence, evaluation, and authorized revision | Unassessable behavior or undetected drift |
+
+**The Five Os structure how a process is described or prescribed. Their usefulness depends on explicit roles, authority, objects, resources, and specification quality. They support implementation choices without guaranteeing that implementations are feasible or interchangeable.**
 
 ---
 
@@ -460,8 +422,4 @@ Object Management Group. *Business Process Model and Notation (BPMN) 2.0* — �
 
 Lacity, M., & Willcocks, L. (2016). Robotic process automation at Telefónica O2. *MIS Quarterly Executive*, 15(1), Article 4. — [AIS eLibrary](https://aisel.aisnet.org/misqe/vol15/iss1/4/) · 🔓 [LSE Research Online (PDF)](https://eprints.lse.ac.uk/64516/1/OUWRPS_15_02_published.pdf) *(Peer-reviewed case; reports annual returns on investment of up to 200% and identifies capability assessment and adoption management — not scripting alone — as the determinants of success.)*
 
-Vendor-published case studies (IBM/FCT, Celonis/TD SYNNEX, Microsoft/EY, UiPath/One NZ) report large improvements in cycle time and automation rate. These are **vendor-reported and not independently verified**, and are cited here only as directional evidence that outcomes correlate with clear objectives, gated triggers, orchestrated dependencies, designed exception handling, and continuous observation — the pattern the framework predicts.
-
----
-
-*This document synthesises practitioner experience in code-based and AI-enabled business process automation with the established literature of control theory, cybernetics, business process management, workflow formalisation, human factors engineering, and socio-technical systems design. Where the framework's dimensions correspond to established constructs, that correspondence is evidence of soundness rather than a claim of priority.*
+Automation case evidence belongs to the specialized application in §10. It does not validate a universal completeness claim for process specification. Vendor-reported outcomes without independent verification are not treated as proof of the framework.

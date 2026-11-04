@@ -1,11 +1,13 @@
 ---
 name: 5o-automation-prompt
-description: Writes and audits agent and system prompts using the Five O principles — Objective, Occurrence, Order, Option, Observation. Use this whenever someone is writing instructions for an AI that acts repeatedly or autonomously: a system prompt, an agent's instructions, a tool-using workflow, a subagent brief, or a prompt that runs on a schedule. Trigger on "write a system prompt", "improve this prompt", "my agent keeps doing X wrong", "why does this prompt misbehave", "review my agent instructions", or when someone shares a prompt and asks what is missing. Especially useful when an agent produces confident but wrong output, does not know when to stop, or fails silently. Also use when turning an automation spec into the prompt that runs it.
+description: "Write or audit AI agent and system prompts using the Five O Principles of Process Specification. Use when turning an AI-operated process specification into executable agent instructions, reviewing an existing prompt, or diagnosing missing authority boundaries, exception responses, and evidence. For general process briefs or specifications use the corresponding process skill instead."
 ---
 
 # Prompt Design with the Five O Principles
 
-A prompt for an agent is a **process specification handed to an operator who cannot ask you questions later.** That is the whole idea behind this skill. Everything a process needs before it can be safely delegated — a defined result, conditions for acting, dependency logic, failure paths, and self-reporting — a prompt needs too, and for the same reasons.
+This skill applies the **Five O Principles of Process Specification** to AI instructions. A prompt communicates process requirements to an AI operator; it does not prove that the operator can fulfil them. Determine whether clarification or escalation is available in the target environment rather than assuming it.
+
+Use the shared roles: **operator** performs an activity, **process owner** holds bounded whole-process responsibility and revision authority, **escalation recipient** receives a specified class of situations beyond the operator's capability or authority, and **role assignment** maps a role to an entity. Any role may be filled by people, machines, software, or AI. The recipient need not be human or the owner. Preserve explicit assignment constraints; functional ownership does not settle organizational accountability. Only prescriptive requirements become instructions; separate descriptive observations and unresolved decisions.
 
 Most prompts specify the happy path in detail and leave everything else to inference. The model then infers, confidently, and you find out weeks later. The Five O dimensions are a way of finding what you left out before it costs you.
 
@@ -32,21 +34,21 @@ When someone describes a misbehaving agent, this is usually the fastest route to
 | Takes an action it should have proposed | **Order** — no autonomy boundary per step |
 | Gives up entirely, or ploughs on when it should stop | **Option** — no defined failure path |
 | Output looks fine but was produced from a fallback | **Observation** — no requirement to report degradation |
-| Nobody can tell why it did what it did | **Observation** — no reasoning trace requirement |
+| Nobody can tell why it did what it did | **Observation** — no assessable decision record |
 
 ## Ground it in real capabilities first
 
 Do this before writing or auditing anything, because it changes what can be written.
 
-**A prompt can only instruct what the agent can actually do.** An instruction that assumes a tool the agent does not have is worse than no instruction: it reads like a control, it passes review, and it silently does nothing. "Escalate to a human when unsure" in an agent whose only outbound action is `send_reply` does not produce an escalation — it produces a reply.
+**A prompt can only instruct what the agent can actually do.** An instruction that assumes a tool the agent does not have is worse than no instruction: it reads like a control, it passes review, and it silently does nothing. "Escalate to the designated recipient when unsure" in an agent whose only outbound action is `send_reply` does not produce an escalation — it produces a reply.
 
 ### Establishing the capability set
 
 **If the user states the target agent's capabilities, use those and only those.** Tools, model, whether it runs attended or unattended, what it can read and write, what it can reach. Take their list as authoritative even when it seems incomplete — they know their deployment and you do not.
 
-**If they do not, check your own.** Look at the tools available to you in this session and assume the prompt is for an agent with roughly your capabilities. Then say so plainly in what you hand back: *"Written assuming the agent can search the web, read and write files, and has no way to message a human mid-run. Tell me if that is wrong."* A stated assumption gets corrected. An unstated one gets deployed.
+**If they do not, check your own.** Look at the tools available to you in this session and assume the prompt is for an agent with roughly your capabilities. Then say so plainly in what you hand back: *"Written assuming the agent can search the web, read and write files, and has no way to contact an escalation recipient mid-run. Tell me if that is wrong."* A stated assumption gets corrected. An unstated one gets deployed.
 
-Ask rather than assume when the answer would change the design substantially — whether there is an escalation channel, whether the run is attended, whether it can write anywhere a human will look.
+Ask rather than assume when the answer would change the design substantially — whether there is an escalation channel, whether the run is attended, whether it can write anywhere the designated reviewing role can access.
 
 ### What to do with the capability set
 
@@ -54,7 +56,7 @@ Ask rather than assume when the answer would change the design substantially —
 - **Autonomy boundaries need a mechanism.** "Draft but do not send" only works if drafting is a thing the agent can do. If the only write action is the irreversible one, the boundary is a wish. Say so.
 - **A missing capability is a finding, not a gap to write around.** No escalation tool, no way to record a run, no read-only mode — name it, say what it blocks, and mark the affected instruction as pending that tool. Do not invent the tool, and do not quietly drop the instruction that needed it.
 - **Capabilities the agent has but should not use here** are worth stating explicitly. An agent that can browse but must not act on the web needs to be told the difference, because the capability is right there.
-- **Unattended changes everything.** No human is watching, so every soft budget becomes unbounded, and the only notification surface is whatever the agent can write to. Design around that rather than assuming someone will notice.
+- **Unattended work needs explicit bounds.** Establish who or what evaluates output and whether any recipient is available during execution. Specify budgets, pending states, and communication surfaces rather than assuming someone will notice.
 
 ### Then ask the reverse question
 
@@ -88,7 +90,8 @@ An agent prompt needs preconditions the same way a process does.
 
 - **Readiness:** what must be present in the input before work can start. And what to do when it is not — which is a different instruction, and usually missing.
 - **Authority:** what this agent may do without asking. Stated as a boundary, not a hope.
-- **The variety check.** List the shapes the input can actually take, and confirm the prompt says something about each. If real inputs come in six kinds and the prompt addresses one, four get handled by improvisation. This is the highest-value ten minutes in prompt design and almost nobody spends it.
+- **Lifecycle and timing:** what starts activity, which readiness and authority conditions must remain true, and what permits suspension, resumption, and ending within the applicable window.
+- **The variety check.** List the shapes the input can actually take, and confirm the prompt says something about each. Unhandled input classes invite unsupported improvisation; distinguish them before decisions depend on them. This is the highest-value ten minutes in prompt design and almost nobody spends it.
 
   **Run it yourself even when the input already contains one.** A spec or brief that enumerates cases has usually done so at the level *it* cared about, which is rarely the level the agent works at. A spec listing four kinds of incoming questionnaire has not told you the eight kinds of *question* inside one — and the agent handles questions, not questionnaires. Ask what unit the agent actually processes, and enumerate at that level. An inherited list marked "done" is the easiest way to skip the most valuable step in this skill.
 
@@ -96,7 +99,7 @@ Where the prompt cannot tell cases apart, classification is a first step in the 
 
 ### Order — what must be established before what
 
-Specify dependencies, not a script. "Verify the customer exists before issuing any credit" is a dependency: it survives the model finding a better route. "Step 1, step 2, step 3" is a script: it breaks the moment reality differs, and it stops the model doing anything intelligent.
+Specify essential dependencies and preserve flexibility over method. "Verify the customer exists before issuing any credit" states a dependency. Prescribe exact steps when the method itself is a requirement, rather than treating every sequence as unnecessary.
 
 Two things to be explicit about:
 
@@ -111,13 +114,13 @@ Deviation is normal operation for an agent. Three classes:
 
 - **Alternative routes** to the same result, in priority order. "Try the API; if it is unavailable, use the cached copy and say so."
 - **Named exceptions** — the conditions you can foresee, each with a response.
-- **Recovery** — escalate, degrade, or stop. **Stopping must be available.** An agent that cannot stop will do the wrong thing rather than nothing.
+- **Recovery** — an alternative route, transfer, acceptable pending state, or controlled termination. Specify any activity needed to maintain a safe condition; inactivity is not automatically safe.
 
 Then two rules that sound opposed and are not:
 
-**Fail loudly.** Require the model to say when it took a fallback, retried, guessed, or could not verify something. This matters more for prompts than anywhere else, because a model's degraded output is *fluent* — it looks exactly like its clean output. A human who could not find a number writes an awkward sentence. A model writes a confident one. Without an explicit reporting requirement, degradation is invisible by default.
+**Fail loudly.** Require the model to say when it took a fallback, retried, guessed, or could not verify something. This matters more for prompts than anywhere else, because a model's degraded output is *fluent* — it looks exactly like its clean output. Fluent output alone does not establish that a requirement was satisfied. Without an explicit reporting requirement, degradation is invisible by default.
 
-**Hand over well.** When escalating to a human, specify what the handover must contain: what was attempted, what state things are in, what specifically is needed. Not "I was unable to complete this task." The person receiving it has no context and is about to need all of yours.
+**Specify the escalation contract.** Name the triggering limit; recipient and required capability, authority, and availability; transferred evidence, actions, current state, and requested resolution; acknowledgment and responsibility-transfer conditions; and a bounded response to unavailability or non-resolution. A second AI with the same limitations is not a useful fallback. Avoid indefinite transfer loops.
 
 ### Observation — what the run should reveal about itself
 
@@ -126,7 +129,7 @@ The dimension prompts most often skip entirely. Require the agent to surface:
 - **What it could not verify**, distinguished from what it verified.
 - **Which route it took** when there was more than one.
 - **What it assumed** to fill a gap — separately from its conclusions, so assumptions do not get read as findings.
-- **A reasoning trace** where the decision matters, at a level a reviewer can check.
+- **A decision record** where the decision matters: criteria applied, source evidence, actions taken, and outcome, at a level a reviewing role can check.
 
 Design this to be *usable*, not decorative. If every output carries three paragraphs of self-report, nobody reads any of it and you have made things worse. Report by exception: silent when clean, explicit when not.
 
@@ -172,7 +175,7 @@ Mark the table clearly as design documentation, not part of the prompt.
 2. Does the prompt distinguish every case the input can take?
 3. Is there an autonomy boundary on every action that changes something?
 4. Is degradation required to be reported, or would a fallback be invisible?
-5. Does the handover to a human carry enough for them to act?
+5. Does each escalation contract name a capable and authorized recipient, acknowledgment conditions, and a bounded response if unresolved?
 6. Are the prohibitions stated as prohibitions, not preferences?
 7. Where two instructions conflict, is it stated which wins? Then look for conflicts you did not intend: take two or three hard cases and check that no pair of rules gives opposite answers to the same one. Adding a rule late is the usual cause — a new prohibition can quietly contradict an existing floor.
 8. Is anything specified as method that should have been specified as outcome?

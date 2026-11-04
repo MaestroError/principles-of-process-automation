@@ -1,0 +1,34 @@
+[
+  {
+    "query": "Help scope our paper-only lending process before we write the detailed spec.",
+    "should_trigger": true
+  },
+  {
+    "query": "All roles are AI. Help clarify what this research intake process should do.",
+    "should_trigger": true
+  },
+  {
+    "query": "Describe current maintenance handoffs; we do not want automation.",
+    "should_trigger": true
+  },
+  {
+    "query": "I want to automate invoice routing but have not decided the approval rules.",
+    "should_trigger": true
+  },
+  {
+    "query": "Implement the approved invoice-routing spec in our application.",
+    "should_trigger": false
+  },
+  {
+    "query": "Fix the grammar of this paragraph without changing its process requirements.",
+    "should_trigger": false
+  },
+  {
+    "query": "Write the final dependency and exception specification from this complete brief.",
+    "should_trigger": false
+  },
+  {
+    "query": "Audit this agent system prompt against its tool list.",
+    "should_trigger": false
+  }
+]

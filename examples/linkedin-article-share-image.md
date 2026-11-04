@@ -1,5 +1,9 @@
 # Article-Share Post Image — Automation Spec
 
+> **Automation application from the framework's development.** Human approvals, numeric autonomy levels, and tool choices below are local design decisions, not universal requirements. The current core is [Process Specification](../PRINCIPLES.md). Role assignments use operator, process owner, and escalation recipient as distinct responsibilities.
+
+**Role assignments:** the publisher is process owner and selection approver; the content agent performs generation or retrieval. The publisher is the escalation recipient for unresolved selection and validation. Transfer the candidates, checks, current draft state, and decision needed; require acknowledgment during the review session. Without acknowledgment or resolution by session end, retain the request as pending and do not attach an image. These human assignments are example-specific.
+
 Context: solo operator · article-sharing posts · article URL in the first comment.
 
 **In:** final post text · first-comment draft containing the article URL.
@@ -124,7 +128,7 @@ Excluded: generated image — outside this objective.
 
 ## Invariants
 
-- **Ownership:** self. The per-domain override table exists as a file.
+- **Process owner:** publisher. The per-domain override table exists as a file.
 - **Objects:** post text · comment draft · raw URL · resolved URL · page HTML · candidate list · selected image URL · downloaded image · resized export · log record.
 - **Resources:** network access · optional headless renderer · publisher's server · ~60 seconds.
 - **Failure domain:** routes (a), (b), (c) all require reaching the publisher's server. Only (d) is independent.

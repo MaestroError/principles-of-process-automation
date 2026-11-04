@@ -58,8 +58,10 @@ Answer before writing. Blanks here become defects later.
 - Which assertions would fail without the skill? Those are the only ones worth writing.
 - Which trigger cases fire it, and which near-misses must not?
 
-**Ownership**
-- Who maintains it? What breaks it when the world changes?
+**Ownership and escalation**
+- Which role maintains it, what entity fills that role, and within what revision authority?
+- Which role receives each unresolved situation, with what capability, authority, availability, acknowledgment, and non-resolution response? Do not assume the recipient is human or the owner.
+- What invalidates its assumptions when the world changes?
 
 ---
 

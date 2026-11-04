@@ -1,8 +1,10 @@
 # Article-Share Post Workflow
 
+> **Automation application from the framework's development.** Human approvals, numeric autonomy levels, and tool choices below are local design decisions, not universal requirements. The current core is [Process Specification](../../PRINCIPLES.md). Role assignments use operator, process owner, and escalation recipient as distinct responsibilities.
+
 A composed automation, specified with the Five O principles **at every level**.
 
-This folder exists to test one claim from `PRINCIPLES.md`: that the framework is fractal — that the same five dimensions apply to a whole workflow and to each of its subprocesses, without modification.
+This folder explores composition: the same five dimensions are considered for a whole workflow and for its subprocesses, with explicit contracts at their boundaries. It is an application example rather than proof of universal completeness.
 
 ---
 
@@ -16,7 +18,7 @@ This folder exists to test one claim from `PRINCIPLES.md`: that the framework is
 | [`03-cta-comment.md`](./03-cta-comment.md) | Produces the first comment carrying the tracked link |
 | [`04-assembly-review.md`](./04-assembly-review.md) | Assembles one draft, runs fit checks, takes the operator's decision, publishes |
 
-Each of the five is a complete Five O specification. None is a fragment.
+Each of the five addresses the Five O dimensions within its declared boundary. The contracts connect them; covering the dimensions alone does not establish completeness.
 
 ---
 
@@ -48,7 +50,7 @@ Each of the five is a complete Five O specification. None is a fragment.
 
 ## What composition required
 
-Applying Five O recursively was not automatic. Six rules had to be established for the levels to fit together, and they are the actual finding of this example.
+Applying Five O recursively was not automatic. Seven rules had to be established for the levels to fit together, and they are the actual finding of this example.
 
 ### 1. The parent's Occurrence is the shared gate
 
@@ -102,7 +104,7 @@ Cherns's *support congruence*: the systems of measurement and reward must reinfo
 - `03` is measured on conversion and constrained against overselling — the metric rewards what the constraint forbids.
 - The parent is measured on **operator edit distance**, where low means the automation is working — and the operator is also the reviewer. The metric rewards the reviewer for editing less, which is exactly the rubber-stamping the level-1 checkpoint exists to prevent.
 
-Both are now named in the specs with the constraint held above the metric. A Five O specification can be complete and still be quietly defeated by what it chose to measure.
+Both are now named in the specs with the constraint held above the metric. A specification can cover every Five O dimension and still be defeated by conflicting measures.
 
 ---
 

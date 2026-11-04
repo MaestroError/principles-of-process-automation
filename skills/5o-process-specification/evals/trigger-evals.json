@@ -1,0 +1,34 @@
+[
+  {
+    "query": "Turn this manual-process brief into a process specification.",
+    "should_trigger": true
+  },
+  {
+    "query": "Specify a process where all operators and the bounded owner are AI agents.",
+    "should_trigger": true
+  },
+  {
+    "query": "Document current practice, including missing controls and unknown handovers.",
+    "should_trigger": true
+  },
+  {
+    "query": "Specify this continuous maintained condition and its pause/resume requirements.",
+    "should_trigger": true
+  },
+  {
+    "query": "I have a vague idea; interview me to work out the intended outcome first.",
+    "should_trigger": false
+  },
+  {
+    "query": "Implement this already-approved spec in code.",
+    "should_trigger": false
+  },
+  {
+    "query": "Proofread the spec for spelling only.",
+    "should_trigger": false
+  },
+  {
+    "query": "Write an agent prompt from this approved specification and stated tools.",
+    "should_trigger": false
+  }
+]

@@ -1,5 +1,9 @@
 # LinkedIn Post Image — Automation Spec
 
+> **Automation application from the framework's development.** Human approvals, numeric autonomy levels, and tool choices below are local design decisions, not universal requirements. The current core is [Process Specification](../PRINCIPLES.md). Role assignments use operator, process owner, and escalation recipient as distinct responsibilities.
+
+**Role assignments:** the publisher is process owner and selection approver; the content agent performs generation or retrieval. The publisher is the escalation recipient for unresolved selection and validation. Transfer the candidates, checks, current draft state, and decision needed; require acknowledgment during the review session. Without acknowledgment or resolution by session end, retain the request as pending and do not attach an image. These human assignments are example-specific.
+
 Context: solo operator · organic text posts · any image type.
 
 ---
@@ -113,7 +117,7 @@ Context: solo operator · organic text posts · any image type.
 
 ## Invariants
 
-- **Ownership:** self. Prompt library and archetype→route mapping exist as files, not memory.
+- **Process owner:** publisher. Prompt library and archetype→route mapping exist as files, not memory.
 - **Objects:** post text · core claim · archetype · route · prompt · candidates · final export · log record.
 - **Resources:** generation credits · operator attention · 15-minute budget · visual-constraint file.
 - **Failure domain:** routes 3 and 4 may share one generation API. Only routes 1 and 5 are independent.

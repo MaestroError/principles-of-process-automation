@@ -1,0 +1,121 @@
+{
+  "skill_name": "5o-process-specification",
+  "evals": [
+    {
+      "id": 0,
+      "name": "clean-brief-single-spec",
+      "prompt": "Here's the brief for our candidate screening automation. Turn it into a spec we can build from.",
+      "expected_output": "One prescriptive spec with explicit role responsibilities and decision rights, tracking-system dependency limits, and the existing non-blocking OPENs preserved. No mandatory numeric automation grid.",
+      "assertions": [
+        "Produces ONE spec - does not decompose a single process",
+        "Does not interrupt with questions when no blocking OPEN exists",
+        "Does not introduce tool, vendor, or platform choices; preserves supplied facts and constraints",
+        "Assigns responsibilities and decision rights for gathering, interpretation, decision, and action where relevant; no mandatory automation-level grid",
+        "States explicitly that no fallback route is independent of the tracking system",
+        "Specifies that degradations are recorded, not only failures",
+        "Observation covers all three horizons: now, accumulated, trending",
+        "Carries the brief's non-blocking OPENs forward without silently resolving them",
+        "No rule is stated in more than one place",
+        "Spec length is proportionate to the process",
+        "Recognizes that routing everything through an unavailable tracking system is not an available safe fallback during that outage"
+      ],
+      "files": [
+        "evals/fixtures/brief-clean.md"
+      ]
+    },
+    {
+      "id": 1,
+      "name": "blocking-opens-must-be-resolved-first",
+      "prompt": "Can you plan out this invoice routing automation? Brief attached.",
+      "expected_output": "Stops before specifying and asks about the three blocking OPENs. When the authority matrix cannot be resolved, does not invent a mapping — separates what is buildable now from what is gated, and keeps the blocking item visible.",
+      "assertions": [
+        "Asks about blocking OPENs before declaring affected behavior ready, while supported independent content may proceed",
+        "Asks no more than 3 questions in a single round",
+        "Does NOT invent an approver mapping to fill the unresolvable blocking gap",
+        "Separates what can be built now from what is gated on the unresolved matrix",
+        "Does not introduce tool, vendor, or platform choices; preserves supplied facts and constraints",
+        "Specifies duplicate detection on more than invoice number, per the re-sent PDF finding",
+        "Names the touchless-percentage measure as fighting the duplicate rule, and states which wins",
+        "The unresolved blocking item remains visible in the delivered spec"
+      ],
+      "files": [
+        "evals/fixtures/brief-blocking-opens.md"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "multi-process-should-decompose",
+      "prompt": "Here's our incident response brief - please turn it into a spec.",
+      "expected_output": "Decomposes into parent plus child specs on stated evidence. Children carry contract blocks, shared preconditions sit in the parent gate, failures are classified hard or soft, and no rule is repeated across artefacts.",
+      "assertions": [
+        "Decomposes into a parent spec plus child specs",
+        "States the specific evidence for decomposing (triggers, owners, finished conditions)",
+        "Each child spec carries a contract block: guaranteed by parent / consumes / produces / escalates",
+        "Puts shared preconditions in the parent gate rather than repeating them per child",
+        "Specifies which deviations prevent the parent outcome and which allow a limited result; does not assume all failures transfer to a human",
+        "Identifies the paging fallback chain as sharing a failure domain",
+        "Does not introduce tool, vendor, or platform choices; preserves supplied facts and constraints",
+        "Names the postmortem-completion-rate measure as fighting quality, and states priority",
+        "No rule is repeated across parent and children - each stated once where enforced",
+        "Child specs are substantially shorter than the parent, not photocopies of it",
+        "Does not treat a shared admission check as valid forever; identifies mutable prerequisites needing later reassessment",
+        "Flags the absence of a safe response for incident investigation rather than inventing a permission to abandon it"
+      ],
+      "files": [
+        "evals/fixtures/brief-multi-process.md"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "manual-descriptive-preserves-gaps",
+      "prompt": "Document the attached lending-desk process exactly as it currently operates. Do not redesign it.",
+      "expected_output": "A descriptive manual specification preserving actual role distinctions and unknown acknowledgment/coverage/retention facts without inventing controls or software.",
+      "assertions": [
+        "Keeps all activity and ownership roles assigned to people using paper evidence",
+        "Keeps the library services manager as process owner and the lending supervisor as escalation recipient",
+        "Marks unknown acknowledgment, waiting behavior, and retention as unknown rather than asserting a new agreed procedure",
+        "Separates any recommendations from observations",
+        "Does not introduce automatic execution or digital logging as requirements",
+        "Addresses each O proportionately without claiming current practice contains controls it lacks"
+      ],
+      "files": [
+        "evals/fixtures/brief-manual-descriptive.md"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "ai-only-owner-and-recipient",
+      "prompt": "Specify the attached finite research collection. All roles are AI; preserve the charter authority and do not add human gates.",
+      "expected_output": "A finite prescriptive specification with bounded AI ownership, a distinct AI specialist recipient, an actionable escalation contract, and closeout evidence rather than invented continuous monitoring.",
+      "assertions": [
+        "Keeps record assessor, specialist assessor, and collection steward as AI assignments with no added human approval or escalation",
+        "Separates bounded functional ownership from the governing organization accountability",
+        "Routes methodological questions to the specialist and only procedure questions to the steward",
+        "Includes transfer evidence/state/actions/request, acknowledgment bound, responsibility-transfer condition, and pending outcome if unresolved",
+        "Prohibits the steward from changing evidence criteria, scope, permissions, or deadline",
+        "Allows finite closeout review with continuous trend monitoring explicitly not applicable",
+        "Preserves dependencies and source-outage limitations without claiming interchangeable agents"
+      ],
+      "files": [
+        "evals/fixtures/brief-ai-only.md"
+      ]
+    },
+    {
+      "id": 5,
+      "name": "continuous-maintained-condition",
+      "prompt": "Write the specification for this continuous process, retaining the OPEN exceptional response.",
+      "expected_output": "Specifies a maintained condition without inventing a scheduled finish; preserves active safe-mode resource requirements and the blocking capacity-exhaustion decision.",
+      "assertions": [
+        "Treats maintaining a condition as a legitimate outcome and does not require a newly produced artifact",
+        "Specifies continuation, suspension, and resumption conditions rather than inventing finite cycles as the only process boundary",
+        "Does not equate doing nothing with a safe state or a dependency-free fallback",
+        "Keeps the capacity-exhaustion response OPEN with its governing decision authority and affected behavior gated",
+        "Allows machine process ownership and a distinct machine escalation recipient",
+        "Does not invent a controller vendor or claim implementation feasibility"
+      ],
+      "files": [
+        "evals/fixtures/brief-continuous.md"
+      ]
+    }
+  ]
+}

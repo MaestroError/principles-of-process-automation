@@ -1,5 +1,7 @@
 # Case 02 — Narrowing the Objective
 
+> **Automation application from the framework's development.** Human approvals, numeric autonomy levels, and tool choices below are local design decisions, not universal requirements. The current core is [Process Specification](../PRINCIPLES.md). Role assignments use operator, process owner, and escalation recipient as distinct responsibilities.
+
 **Event.** Specifying a deliberately narrow process (attach a shared article's own featured image to the post) immediately after specifying a broad one (produce any image type for any post type), to test a prediction from Case 01.
 **Prediction tested.** That narrowing the Objective would collapse the specification.
 **Result.** The prediction partly failed. The failure is the useful part.

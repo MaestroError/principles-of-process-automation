@@ -1,5 +1,7 @@
 # Automation Spec: Vendor security questionnaire drafting
 
+**Application scope:** Prescriptive mixed process. The security lead is the approval authority and designated recipient for incident-specific or legal-review exceptions. The drafting agent is an activity operator. Human sign-off and the allocation grid below are local constraints, not universal framework requirements. The escalation acknowledgment and unavailable-recipient response are unspecified and must remain visible as gaps.
+
 **Status:** Ready to build
 
 **In one line:** Draft answers to inbound vendor security questionnaires from our existing policy library, for a human to review before anything is sent.

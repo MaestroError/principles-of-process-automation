@@ -1,9 +1,11 @@
 ---
 name: 5o-skill-design
-description: Designs and audits agent skills using the Five O principles — Objective, Occurrence, Order, Option, Observation. Use this whenever someone is writing, packaging, or fixing a skill: a SKILL.md, a reusable workflow they want an agent to pick up on its own, instructions bundled with reference files or scripts. Trigger on "write a skill for", "turn this into a skill", "my skill never triggers", "Claude ignores my skill", "review my SKILL.md", "improve this skill's description", or when someone keeps re-explaining the same workflow and wants it captured once. Especially useful when a skill fires on the wrong things, gets loaded and then ignored, works only on the examples it was written against, or eats the context window. Not for writing a system or agent prompt — that is 5o-automation-prompt. Not for running, grading or benchmarking evals, or for automated description tuning — hand those to skill-creator once the design is settled.
+description: "Design or audit reusable AI skills, including SKILL.md, trigger descriptions, supporting references, templates, and capability-dependent fallbacks. Use when creating a skill from a workflow or fixing a skill that misfires, overtriggers, or behaves inconsistently. Applies the Five O Principles of Process Specification; use 5o-automation-prompt for agent prompts and the general process skills for non-skill specifications."
 ---
 
 # Skill Design with the Five O Principles
+
+This is a specialized application of the **Five O Principles of Process Specification** to AI skills. Operator means the entity performing an activity. Process owner means the role with bounded whole-process responsibility and revision authority. Escalation recipient means the role assigned to resolve a specified class of situations beyond an operator's capability or authority. No core role is inherently human; preserve supplied assignments and define authority limits.
 
 A skill is a **process specification that must first decide whether it applies — and then run in a harness you have never seen.**
 
@@ -81,7 +83,7 @@ Four separate things, which fail differently:
 
 Write the description in the third person, and make it slightly pushy — the common failure mode is skills not firing when they would have helped, not skills firing too eagerly.
 
-Then the **variety check**: enumerate the shapes of request that will actually reach this skill, and confirm it says something about each. If real requests come in six kinds and the skill addresses one, four get handled by improvisation. Run this yourself even when the user has already listed cases — their list is at the level *they* cared about, which is rarely the level the skill operates at.
+Then the **variety check**: enumerate the shapes of request that will actually reach this skill, and confirm it says something about each. Unhandled request classes invite unsupported improvisation; identify them before dependent decisions. Run this yourself even when the user has already listed cases — their list is at the level *they* cared about, which is rarely the level the skill operates at.
 
 ### Order — progressive disclosure is a dependency graph
 
@@ -129,7 +131,7 @@ For running, grading, and benchmarking them, and for automated description optim
 
 ### Ownership — across all five
 
-Brief, but real. Who maintains this skill. What happens to it when the tool it wraps changes, or the product it assumes gets reorganised. Whether a bundled script is a dependency somebody must keep alive. A skill with no owner is not neutral — it rots quietly and keeps firing.
+Identify the role maintaining requirements, its assignment and revision authority, and what happens when tools or assumptions change. The maintainer may be a person, team, or an AI with bounded authority. Keep organizational accountability separate. For escalations during skill execution, identify the recipient, required capability/authority/availability, transfer contents, acknowledgment, and bounded non-resolution response. Do not default those transfers to the maintainer or a human.
 
 ## Writing it
 

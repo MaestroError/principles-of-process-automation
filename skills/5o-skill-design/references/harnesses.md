@@ -1,5 +1,7 @@
 # What varies between installs
 
+These are AI-specific application patterns. Human assignments in individual examples are local constraints, not requirements of the general process-specification framework. Use an explicit escalation recipient and contract where a transfer is required.
+
 Read when a skill depends on subagents, scripts, a browser, a display, network access, or writing to disk — which is most skills that do anything.
 
 A skill is written once and runs wherever someone installs it. The install decides what exists. Nothing below fails loudly: the model reads an instruction it cannot carry out, and improvises.
