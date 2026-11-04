@@ -1,5 +1,9 @@
 # Article-Share Post Workflow — Automation Spec (Parent)
 
+**Application scope:** Prescriptive mixed process. The publisher fills the process-owner and publication-approver roles; the content agent is an activity operator. The publisher is also the designated escalation recipient for failed gates and unresolved publication states. The human-only approval constraint is local to this example.
+
+**Escalation contract:** Transfer the source URL, validation evidence, actions taken, draft state, and requested decision to the publisher's review queue. Responsibility transfers on acknowledgment during the publishing session. Without acknowledgment before session end, retain the draft as pending and do not publish. If publication already occurred and the comment failed, retain that explicit unresolved state and invoke the publication incident response below rather than describing the outcome as a safe unpublished draft.
+
 Context: solo operator · shares an article as a LinkedIn post · reviews one assembled draft before publish.
 
 **In:** article URL · optional angle instruction.

@@ -1,3 +1,5 @@
+> **Historical draft.** This is the original automation-oriented sketch, preserved unchanged below. The current framework is [The Five O Principles of Process Specification](./PRINCIPLES.md), with shared vocabulary in [TERMS.md](./TERMS.md). Historical wording is not a current requirement.
+
 The Five O Principles of Process Automation
 -------------------------------------------
 

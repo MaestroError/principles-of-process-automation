@@ -1,5 +1,7 @@
 # Case 01 — Specification as Interrogation
 
+> **Automation application from the framework's development.** Human approvals, numeric autonomy levels, and tool choices below are local design decisions, not universal requirements. The current core is [Process Specification](../PRINCIPLES.md). Role assignments use operator, process owner, and escalation recipient as distinct responsibilities.
+
 **Event.** Applying the Five O principles to a small, familiar process (creating an image to attach to a LinkedIn post) in order to test the framework.
 **Duration.** One working session.
 **Outcome.** The specification exercise changed the design of the automation three times before any of it was built.

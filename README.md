@@ -1,103 +1,84 @@
-# The Five O Principles of Process Automation
+# The Five O Principles of Process Specification
 
-**Five questions you must answer before you automate anything.** They work the same whether the work is done by a person, a machine, or an AI.
+**Five questions for stating how a process operates or is required to operate.**
 
-Most automation that fails is not badly built. It is built to do the wrong thing faster, or it works beautifully until the first surprise and then hands a crisis to someone who cannot pick it up. These five questions are for catching that before you build.
+Use the same core vocabulary for work performed entirely by people, entirely by AI or machines, or by any combination. The framework supports description, design, coordination, delegation, assessment, and revision. Automation is one application.
 
-| | |
+| Principle | What the specification states |
 |---|---|
-| **Objective** | What does success look like, and where are the limits? |
-| **Occurrence** | When is it allowed to start? |
-| **Order** | What has to happen before what? |
-| **Option** | What happens when things go wrong? |
-| **Observation** | How do you see what happened, and how does that change things? |
+| **Objective** | Intended outcomes, boundaries, constraints, trade-offs, and acceptable endings. |
+| **Occurrence** | Conditions for beginning, continuing, suspending, resuming, and ending activity. |
+| **Order** | Dependencies, state transitions, coordination, discretion, and completion conditions. |
+| **Option** | Alternatives, exception responses, escalation contracts, and unresolved states. |
+| **Observation** | Evidence, evaluation responsibility, and the route from findings to revision. |
 
-Plus two checks that cut across all five: **who owns each part**, and **what it works on**.
+Two requirements cut across all five: **ownership and authority**, and **objects and resources**.
 
----
+Declare whether the specification is **descriptive** (current practice) or **prescriptive** (required behavior). If it includes both, distinguish them. Keep assumptions, recommendations, and unresolved decisions visible.
 
 ## Start here
 
-### 📖 [MANIFESTO.md](./MANIFESTO.md)
+- **[MANIFESTO.md](./MANIFESTO.md)** — the framework in plain language, including questions to ask and limits to its claims.
+- **[TERMS.md](./TERMS.md)** — shared definitions of operator, process owner, escalation recipient, role assignment, and related terms.
+- **[PRINCIPLES.md](./PRINCIPLES.md)** — the fuller framework, specification-quality criteria, running cases, and sources.
+- **[Examples](./examples/README.md)** — fully manual, fully AI, and mixed processes, plus specialized automation applications.
 
-**Read this first.** Twenty minutes, plain language, no citations. It is the whole framework — the five principles, what goes wrong when you skip each one, the questions to ask yourself, and the honest limits.
+An **operator** performs an activity. A **process owner** holds responsibility for the whole process within defined authority. An **escalation recipient** receives a particular class of unresolved situations. No core role is inherently human, and the recipient need not be the owner. Organizational accountability is defined by the surrounding governance.
 
-A few things in there that people tend to find worth the read on their own:
+## What makes a specification useful
 
-- Why **a process that cannot fail cannot stop** — and so will do the wrong thing rather than nothing
-- Why **your backup plan is not a backup plan** if it needs the thing that just broke
-- Why **the better your automation gets, the worse the people behind it get at the job** — and what to do about it
-- Why **a quiet success is a warning you threw away**
+Covering five headings is a starting point. Requirements also need consistent meanings, assessable criteria, appropriate detail, explicit uncertainty, compatible interfaces, and a governed route for revision. A simple process needs a simple specification; a justified statement of non-applicability is better than invented machinery.
 
-If you read one file in this repository, read that one.
+An operator-independent specification supports changes in implementation. It does not guarantee that a person, script, machine, or AI can replace another unchanged. Assess capabilities, authority, interfaces, resources, and evidence for each proposed implementation.
 
----
+## Use it with your AI assistant
 
-## Use it with your AI agent
-
-Four skills apply the framework so you do not have to hold it all in your head. Three of them chain — idea to brief to spec to prompt. The fourth sits beside that chain and is about the skills themselves. Each works on its own.
+Two general authoring skills support the framework. Two specialized skills apply it to AI instructions. Each works independently; a general process brief or specification does not have to lead to an agent prompt.
 
 | Skill | Takes | Gives back |
 |---|---|---|
-| **[`5o-process-automation-brief`](./skills/5o-process-automation-brief)** | A rough idea, however vague | A decision-complete brief, via a short interview |
-| **[`5o-automation-planning`](./skills/5o-automation-planning)** | A brief | A buildable specification |
-| **[`5o-automation-prompt`](./skills/5o-automation-prompt)** | A spec, or just a description | An agent or system prompt — and it audits existing ones |
-| **[`5o-skill-design`](./skills/5o-skill-design)** | A workflow you keep repeating, or a skill that misbehaves | A skill directory — and it audits existing ones |
+| **[`5o-process-brief`](./skills/5o-process-brief)** | A rough process description or intended change | A concise brief separating decisions, observations, assumptions, and open questions. |
+| **[`5o-process-specification`](./skills/5o-process-specification)** | A brief or requirements | A proportionate descriptive or prescriptive specification. |
+| **[`5o-automation-prompt`](./skills/5o-automation-prompt)** | An AI-operated process specification or agent instructions | An agent or system prompt, or an audit of an existing one. |
+| **[`5o-skill-design`](./skills/5o-skill-design)** | A repeated agent workflow or an existing skill | A skill directory, or an audit of an existing one. |
 
-**What they actually do for you:**
+The **brief** skill asks only about meaningful gaps and preserves unknowns. The **specification** skill makes dependencies, decision rights, exception handling, and evidence explicit without inventing an implementation. Both preserve manual, AI-only, and mixed role assignments. An explicit human-only approval constraint remains a constraint when the user supplies it.
 
-The **brief** skill interviews you about the parts you have not thought about yet — what must never happen, who gets woken up when it breaks, whether stopping is allowed. If the answers will not fit in 1000 words, it tells you that you are describing more than one automation and suggests which piece to build first.
+The **prompt** and **skill-design** skills are applications of the framework. They check actual tools and permissions: requiring escalation does not create a communication channel, a capable recipient, or permission to transfer work.
 
-The **planning** skill turns that into a spec. It stops and asks about anything that would change the design rather than specifying around a hole, and it never names a tool — what must be true, not which vendor.
+### Installing the skills
 
-The **prompt** skill writes and audits agent prompts. It checks what your agent can *actually* do first, because "escalate to a human" in an agent with no escalation tool is not a control — it just looks like one. It also treats anything the agent reads from outside as an attack surface.
-
-The **skill design** skill writes and audits skills. Two things separate a skill from a prompt, and they are most of what it is about: a prompt is always loaded, but a skill has to be *chosen* — so the description field is the whole trigger, and a skill that never fires fails silently, forever. And a prompt runs where you deployed it, while a skill runs wherever someone installs it, on tools you cannot enumerate. It also asks the question almost no skill answers: what does this skill do when it does not fit?
-
-### Installing them
-
-**Claude Code** — copy into your skills directory:
+For Claude Code, copy the folders into your skills directory:
 
 ```bash
-# Git clone or just download zip from github
 git clone https://github.com/MaestroError/principles-of-process-automation.git
 cp -r principles-of-process-automation/skills/5o-* ~/.claude/skills/
 ```
 
-Use `.claude/skills/` inside a project instead if you only want them there. Restart, then just describe what you want to automate — the skills trigger on their own.
+Use `.claude/skills/` inside a project for project-local installation. For another assistant, use its supported skill-loading mechanism or supply the relevant `SKILL.md` and supporting files as instructions.
 
-**Claude Desktop / Cowork** — same folders work. Point Claude at a skill directory and ask it to save the skill, or drop the folders into your skills location.
+**Renamed skills:** `5o-process-automation-brief` is now `5o-process-brief`; `5o-automation-planning` is now `5o-process-specification`. Replace older installed folders rather than retaining both versions, so duplicate skills do not compete for the same request. The specialized prompt and skill-design names remain unchanged.
 
-**Anything else** — a skill is a folder with a `SKILL.md` and some reference files, all plain markdown. Paste `SKILL.md` in as instructions, or hand the folder to whatever agent framework you use. Nothing here depends on a particular vendor.
+The repository URL retains its original name so existing links continue to work.
 
 ### Try it
 
-> "I want to automate our invoice approvals — can you help me work out what we actually need?"
+> "Describe how our paper-based lending desk currently works. Keep unknowns separate from required behavior."
 
-> "Here's our agent prompt. It keeps promising things it shouldn't. What's wrong with it?"
+> "Specify this research-record process. All operators, the specialist escalation recipient, and the bounded process owner are AI agents."
 
-> "I wrote this skill weeks ago and Claude has never once used it. What did I do wrong?"
+> "Turn this maintenance brief into a spec. The monitoring system, technician, and supervisor have different decision rights."
 
----
+> "Audit this agent prompt against the process specification and its actual capabilities."
 
-## Everything else
+## Applications and history
 
-**[PRINCIPLES.md](./PRINCIPLES.md)** — the same framework at length, with its sources. Every claim is traced to the literature it came from: control theory, cybernetics, business process management, workflow formalisation, human factors, socio-technical design. Every reference is linked, and most are freely readable. Read this if you want to know *why* a principle holds, argue with it properly, or take it somewhere academic.
+The existing LinkedIn workflows and case studies record the framework's development through automation work. They remain examples of that application rather than universal requirements. [draft.md](./draft.md) preserves the original sketch as historical material.
 
-**[draft.md](./draft.md)** — the original one-page sketch this grew from. Kept for the record.
+Automation-specific grounding, including human takeover and levels of assistance, is retained in the [specialized application section](./PRINCIPLES.md#10-specialized-application-automation-and-ai). It does not impose human escalation, manual practice, or an automation grid on every process.
 
----
+## Limits and contributions
 
-## What this is, and is not
+The Five Os are a coverage and design-review scaffold, not a proof of completeness or a substitute for domain expertise. A fully specified process can still be undesirable, inconsistent, or infeasible.
 
-It is a checklist you can carry, grounded in work that is decades old and mostly forgotten outside its own fields. Nothing in it is new. What is new is having it in one place, in language you do not need a doctorate to read.
-
-It will not tell you whether your process is worth automating — only make you ask. It is not a notation, and it does not replace real expertise where a step is genuinely dangerous. And it will not tell you whether people will accept how you have divided the work.
-
-Answering all five does not make a good process. It makes a *described* one. Whether it should exist at all is still your call — and it is the first question, not the last.
-
----
-
-## Contributing
-
-Corrections to `PRINCIPLES.md` are especially welcome — if a source says something different from what is claimed, that is worth an issue. The skills carry their own eval sets under `skills/*/evals/`, so behaviour changes can be tested rather than argued about.
+Corrections to the source interpretations and counterexamples to the framework are welcome. Skill evaluation scenarios live under `skills/*/evals/`; they describe observable behavior and do not, by themselves, establish passing results.

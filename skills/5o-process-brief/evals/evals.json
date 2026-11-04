@@ -1,0 +1,102 @@
+{
+  "skill_name": "5o-process-brief",
+  "evals": [
+    {
+      "id": 0,
+      "name": "vague-idea-needs-deep-interview",
+      "prompt": "i want to automate our invoice thing. right now when an invoice comes in someone in finance has to check it and then it goes to whoever needs to approve it and then it gets paid. takes way too long, sometimes weeks. can you help me figure out what we actually need here",
+      "expected_output": "A decision-complete brief under 1000 words. Vague idea, so the interview should run as long as needed. Every question should be earning work, resources, or responsibility. Should surface approval thresholds, duplicate-payment prevention, safe stop, and who owns escalation.",
+      "assertions": [
+        "Never asks more than 3 questions in a single round (a follow-up counts as a new round)",
+        "Brief is 1000 words or fewer",
+        "Every question clarifies a meaningful outcome, condition, work, resource, responsibility, evidence, or uncertainty",
+        "Names a specific person or role for every failure path, not 'the team'",
+        "Brief marks genuinely undecided items as OPEN rather than inventing answers",
+        "Recommendations are specific to supported findings rather than added to fill a quota",
+        "Brief stays out of implementation - no tool choice, architecture, or vendor selection",
+        "Captures a safe stop - what happens when the process cannot complete"
+      ],
+      "files": []
+    },
+    {
+      "id": 1,
+      "name": "well-specified-idea-should-not-over-ask",
+      "prompt": "We need a brief for an automation. When a candidate submits an application through our Greenhouse careers page, we want to screen it against the role's must-have requirements, reject the clear no-matches with a templated email within 24 hours, and push everyone else to the hiring manager's review queue. Legal has told us a human must sign off on every rejection — that is non-negotiable. We don't want it touching internal referrals or anything from the exec search firm, those go straight to the hiring manager. Success is time-to-first-response under 24h without our false rejection rate going up. Ravi in Talent Ops owns it.",
+      "expected_output": "A brief under 1000 words reflecting the supplied decisions without re-asking them. Should target only genuine gaps: Greenhouse outage, what 'clear no-match' means, the safe stop, false rejection detection, who covers for Ravi.",
+      "assertions": [
+        "Never asks more than 3 questions in a single round (a follow-up counts as a new round)",
+        "Does NOT re-ask anything the user already stated (trigger, exclusions, legal sign-off, success measure, owner)",
+        "Brief is 1000 words or fewer",
+        "Asks whether the actual fallback depends on Greenhouse; does not assert universal dependency from the product name alone",
+        "Identifies that Ravi is a single owner with no backup",
+        "Identifies that the 24h speed target conflicts with the human sign-off requirement",
+        "Recommendations are specific to supported findings rather than added to fill a quota",
+        "Brief stays out of implementation - no tool choice or architecture"
+      ],
+      "files": []
+    },
+    {
+      "id": 2,
+      "name": "broken-premise-should-be-challenged-once",
+      "prompt": "Every Monday I spend about two hours copying numbers out of four different dashboards into a slide deck, then I email it to the leadership team. I want to automate the whole thing so the deck builds itself and sends Monday morning. Nobody ever replies to it but I have to send it.",
+      "expected_output": "Challenges the premise exactly once with a concrete alternative, respects the answer, then produces a complete brief under 1000 words with the readership question carried into recommendations.",
+      "assertions": [
+        "Challenges whether the report should exist AT ALL",
+        "Challenges it exactly ONCE, then respects the user's answer and proceeds",
+        "Offers a concrete alternative when challenging, not just a vague doubt",
+        "Never asks more than 3 questions in a single round (a follow-up counts as a new round)",
+        "Still produces a complete brief after the user declines the challenge",
+        "Carries the readership question into the recommendations rather than dropping it",
+        "Brief is 1000 words or fewer",
+        "Brief stays out of implementation - no tool choice or architecture"
+      ],
+      "files": []
+    },
+    {
+      "id": 3,
+      "name": "oversized-scope-should-be-split",
+      "prompt": "We want to automate customer onboarding end to end. Right now when a deal closes, sales hands it to us in a Slack message, then someone has to get the contract countersigned, set up their account in our platform, provision seats, schedule a kickoff call, build them a custom training plan, get their billing set up in Stripe, and then hand them to the customer success manager after 30 days. It's owned by me for the account setup part, but Finance owns billing and CS owns the kickoff and training. Different bits break all the time and we lose track of where people are.",
+      "expected_output": "Should recognise this is several processes, not one — multiple triggers, three owners (user, Finance, CS), multiple 'finished' conditions. Should propose a named split, recommend which subprocess to specify first with a reason, then write a brief for THAT ONE subprocess under 1000 words, listing the others as deliberately out of scope.",
+      "assertions": [
+        "Recognises independently scoped subprocesses from the supplied owners and completion conditions",
+        "Proposes a named split into specific subprocesses",
+        "Recommends which subprocess to specify first, with a stated reason",
+        "Writes the brief for ONE subprocess, not all of them",
+        "Names the other subprocesses as deliberately out of scope",
+        "Brief is 1000 words or fewer",
+        "Never asks more than 3 questions in a single round (a follow-up counts as a new round)",
+        "Identifies the three-owner problem as a reason for splitting"
+      ],
+      "files": []
+    },
+    {
+      "id": 4,
+      "name": "manual-description-without-redesign",
+      "prompt": "# Current practice: Paper library lending desk\n\nDocument current practice only; do not redesign it. Clerks and the lending supervisor are people. All records are paper. A clerk receives a member's request, checks the membership card and item category, records a due date in the loan register, and releases eligible items. Reference-only items are never lent. Clerks share the register in arrival order. The library services manager owns the desk procedure and may revise it within lending policy; it is a different person from the lending supervisor.\n\nDisputed eligibility goes to the supervisor with the item record and membership card. The supervisor sometimes leaves before the desk closes. Nobody knows how acknowledgment is recorded or what clerks actually do while waiting; this is a fact to investigate, not an agreed new rule. The manager checks overdue entries weekly. We do not know how long records are retained. Do not introduce software or turn this into an automation proposal.\n\nPlease turn this into a concise brief of current practice; leave the unknowns open.",
+      "expected_output": "A descriptive manual brief with paper evidence and separate owner/recipient assignments; no invented controls.",
+      "assertions": [
+        "Does not ask again whether software should automate the work",
+        "Keeps role assignments manual and evidence on paper",
+        "Separates observed practice, OPEN facts, and any recommendations",
+        "Does not fill missing escalation acknowledgment or waiting behavior with invented requirements",
+        "Keeps manager ownership distinct from supervisor escalation"
+      ],
+      "files": []
+    },
+    {
+      "id": 5,
+      "name": "ai-only-brief-no-human-default",
+      "prompt": "# Process Brief: AI-only research collection\n\nKind: Prescriptive. All roles inside this process are AI agents: record assessor, specialist assessor, and collection steward. The steward owns the process and may revise assessment order and clarification guidance within charter v1, but cannot alter scope, evidence rules, access permissions, or the deadline. Charter v1 supplies authority; its governing organization retains wider accountability outside this boundary. Do not add human review or human escalation.\n\nThe outcome is a collection of source-supported records by 18:00 UTC on the charter date, plus excluded/pending dispositions. Coverage may be sacrificed to evidence quality. Intake requires accessible source provenance, writable record storage, permissions matching the role, and an open processing window. Recheck source access and permissions before acceptance. Independent records can run concurrently within the charter's budget. Provenance precedes support assessment; support precedes acceptance; conflicting versions remain pending until reconciled.\n\nMethodological uncertainty goes to the specialist assessor, not automatically to the steward. The specialist can inspect sources and resolve within the fixed evidence standard. Transfer record id, source spans, criteria/checks, actions, current state, and requested decision. It must acknowledge within ten minutes or before 18:00, whichever comes first. Responsibility for that decision transfers on acknowledgment. Unavailable/unresolved cases remain pending outside the accepted set by closeout; do not cycle them repeatedly. Only procedure-policy questions go to the steward under the same contract. Source substitutes must be charter-permitted and provenance-checked. A source outage may disable every source-dependent route; do not claim an independent fallback.\n\nRecord sources, decisions, substitutions, transfers, acknowledgments, and unresolved reasons. At closeout the steward checks all unresolved dispositions and a charter-defined sample of accepted records, then identifies any authorized procedure revision by version and notifies assessors. This is a finite collection, so closeout review applies; continuous trend monitoring is not required. Tools and agent implementation choices are outside this specification.\n\nProduce the process brief. These decisions are settled.",
+      "expected_output": "A concise brief reflecting settled AI-only decisions without re-interviewing or inserting human roles.",
+      "assertions": [
+        "Preserves bounded AI process ownership and AI specialist escalation",
+        "Does not add human approval or human escalation",
+        "Captures acknowledgment and pending outcome in the escalation contract",
+        "Preserves charter revision limits and surrounding accountability",
+        "Does not impose ongoing trend monitoring on this finite collection",
+        "Does not re-ask settled decisions or infer permission to choose implementation tools"
+      ],
+      "files": []
+    }
+  ]
+}

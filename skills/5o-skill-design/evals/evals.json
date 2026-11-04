@@ -17,7 +17,9 @@
         "Delivers a coverage table naming real remaining gaps",
         "Rewritten skill is NOT organised into five sections named after the dimensions"
       ],
-      "files": ["evals/fixtures/skill-never-triggers.md"]
+      "files": [
+        "evals/fixtures/skill-never-triggers.md"
+      ]
     },
     {
       "id": 1,
@@ -34,7 +36,9 @@
         "Names which neighbouring skill or tool should win for cases this one should not take",
         "Delivers a coverage table naming real remaining gaps"
       ],
-      "files": ["evals/fixtures/skill-overtriggers.md"]
+      "files": [
+        "evals/fixtures/skill-overtriggers.md"
+      ]
     },
     {
       "id": 2,
@@ -52,7 +56,9 @@
         "Writes evals whose assertions would fail without the skill",
         "Delivered SKILL.md is NOT organised into five sections named after the dimensions"
       ],
-      "files": ["evals/fixtures/workflow-transcript.md"]
+      "files": [
+        "evals/fixtures/workflow-transcript.md"
+      ]
     },
     {
       "id": 3,
@@ -84,6 +90,21 @@
         "States the assumed capability set in the handback itself, not only inside the files",
         "Names any capability gap as a finding rather than writing an instruction that silently cannot run",
         "Delivers a coverage table naming real remaining gaps"
+      ],
+      "files": []
+    },
+    {
+      "id": 5,
+      "name": "ai-maintainer-and-recipient",
+      "prompt": "Write a reusable research-record assessment skill. The record assessor is AI. An AI collection steward maintains the skill and may revise clarification guidance within a fixed evidence charter; it cannot change evidence criteria or access. Methodological uncertainty goes to a different specialist AI over an available acknowledged channel. No human approval or escalation belongs inside this process. If the specialist cannot acknowledge within ten minutes or resolve before the charter deadline, retain the record as pending. The harness supports source reads, record writes, and acknowledged specialist messages.",
+      "expected_output": "A skill with explicit AI maintainer authority limits and a distinct specialist escalation contract, without inserting human roles.",
+      "assertions": [
+        "Keeps the AI process owner distinct from the specialist AI escalation recipient",
+        "Preserves fixed evidence/access limits on maintainer revisions",
+        "Includes evidence/state/actions/request, acknowledgment, and bounded unresolved outcome",
+        "Does not insert a human-only review or escalation",
+        "Names surrounding governance/accountability as separate from functional AI ownership where relevant",
+        "Does not invent a human contact tool or unsupported authority"
       ],
       "files": []
     }

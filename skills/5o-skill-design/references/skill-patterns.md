@@ -1,5 +1,7 @@
 # Skill patterns by dimension
 
+These are AI-specific application patterns. Human assignments in individual examples are local constraints, not requirements of the general process-specification framework. Use an explicit escalation recipient and contract where a transfer is required.
+
 Concrete phrasings, weak version against strong version. Use when writing, or when an audit has found a gap and you need to fill it well.
 
 The pattern throughout: **weak versions describe the skill from the author's side, strong versions describe it from the situation the user is in.** That is the difference between a skill that reads well and one that fires.
@@ -161,7 +163,7 @@ Silent improvisation around broken machinery is the worst available outcome, bec
 
 > ✗ "Spawn a subagent per test case and run them in parallel."
 >
-> ✓ "Spawn a subagent per test case and run them in parallel. Where subagents are not available, run the cases yourself one at a time — slower and less independent, but the human review step is what catches most of it anyway. Say which you did."
+> ✓ "Spawn a subagent per test case and run them in parallel. Where subagents are not available, run the cases yourself one at a time — slower and less independent, and the designated reviewing role must compare the results against the stated criteria. Say which execution mode was used."
 
 The fallback belongs in the same breath as the instruction, not in a section at the end that a reader may never reach.
 

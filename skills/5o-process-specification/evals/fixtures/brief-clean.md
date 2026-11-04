@@ -1,4 +1,6 @@
-# Automation Brief: Candidate screening and rejection
+# Process Brief: Candidate screening and rejection
+
+**Specification kind:** Prescriptive
 
 **Status:** Ready for planning
 
@@ -52,10 +54,10 @@
 
 | Job | Who | Notes |
 |---|---|---|
-| Owns the outcome | Ravi (Talent Ops) | |
+| Process owner | Ravi (Talent Ops) | |
 | Can change the rules | Head of Talent | Must-haves are set per role by the hiring manager |
 | Approves each rejection | Ravi | Business hours only; **no named cover when away** |
-| Picks up escalations | Head of Talent | |
+| Escalation recipient | Head of Talent | |
 
 ---
 
@@ -63,7 +65,7 @@
 
 **Other routes:** None that are independent. The tracking system is the trigger, the queue, and the outbound email — every fallback needs the thing that would have broken.
 **Known exceptions:** Application with unclassifiable source → treat as excluded, route to hiring manager. Role with no structured must-haves → do not screen. Sign-off queue older than 48h → stop screening, let everything through to the hiring manager.
-**Safe stop:** Stop screening and route everything to hiring managers unscreened. Explicitly allowed — a backlog of unscreened applications is recoverable, a wrong rejection is not.
+**Safe stop:** While the tracking system is available, stop screening and route everything to hiring managers unscreened. During a tracking-system outage, do not issue rejections; leave applications unprocessed at their source and record the unavailable routing/evidence dependency when access returns. Do not claim that an unscreened routing occurred while the queue was unavailable. A backlog is recoverable, a wrong rejection is not.
 
 ---
 

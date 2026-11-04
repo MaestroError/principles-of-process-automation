@@ -1,205 +1,174 @@
-# The Five O Principles of Process Automation
+# The Five O Principles of Process Specification
 
-**Five questions you must answer before you automate anything — in business, law, engineering, or anywhere else.**
+**Five questions for stating how a process works or how it should work.**
 
-These principles work the same whether the work is done by a person, a machine, or an AI.
+The same questions apply when the work is performed entirely by people, entirely by AI or machines, or by any combination. They help you describe existing work, design new work, coordinate responsibilities, assess results, and revise requirements. Automation is one possible application.
 
-Nothing here is new. It comes from decades of work in quality standards, business process management, control engineering, safety analysis, and research into how people and machines work together. What is new is putting it all in one short list that anyone can use. You should not have to read forty papers to design a process well. That is the point of this document.
-
----
-
-## What is a process?
-
-**A process is work that changes something.**
-
-It has a start and an end. It takes something in and produces something out. And it happens more than once, in a way you can describe — otherwise it is just a one-off task.
-
-Notice what this leaves out: **who does the work.** This matters more than it looks. If you describe a process properly, you can move it between a clerk, a script, a machine, and an AI without redesigning it. Choosing who does the work becomes a separate decision, made later.
+These principles bring together ideas from quality management, coordination, control theory, workflow design, and human factors. They identify what to make explicit. They do not guarantee that the process is worthwhile or that a particular implementation can carry it out.
 
 ---
 
-## First, ask if it should exist
+## What are we specifying?
 
-Before anything else: **should this process exist at all?**
+**A process is a related set of activities contributing to an outcome.** The outcome may change something, maintain a condition, or prevent an unwanted change.
 
-Most failed automation projects are not badly built. They are built to do the wrong thing faster. Someone takes a process that grew by accident over ten years and makes it run in seconds. Now the company is wrong at speed.
+A process can happen once, recur, or continue indefinitely. State its boundary: what work is included, what is outside it, and where it connects to other work. A continuous process needs conditions for operating and pausing even if it has no scheduled finish.
 
-So ask what the work is really for. Not how it is done today — what result you actually need. Very often the answer changes the whole design, and sometimes it deletes half the steps.
+Declare which kind of specification you are writing:
 
----
+- **Descriptive:** how the process currently works. Record unknowns and departures from stated rules honestly.
+- **Prescriptive:** how the process is required to work. Distinguish requirements from assumptions, recommendations, and undecided questions.
 
-# The Five Principles
+If you include both, label them. A desired future state is not a description of current practice.
 
-## 1. Objective — what does success look like, and where are the limits?
+## Agree on roles before assigning them
 
-A goal on its own is not enough. An objective is only finished when it says four things:
+An **operator** performs an activity. Gathering information, interpreting it, deciding, and acting are all activities.
 
-- **The result** you want, and who it is for.
-- **What is not included.** The edges matter as much as the middle.
-- **What must never happen** — even if breaking that rule would be faster or cheaper.
-- **What you are willing to trade.** Speed for quality? Cost for flexibility? Say which, and say how far.
+A **process owner** holds responsibility for the process as a whole, with defined authority over requirements, performance, and revision.
 
-Then add one more thing that most people forget: **when is stopping the right answer?** A process that has no way to fail cannot stop. So it will keep going when it should not.
+An **escalation recipient** receives a situation the current operator cannot resolve within its capability or authority. It may be a specialist or a role with different permissions. It need not be the process owner or a hierarchical superior.
 
-**If you skip this:** the system runs fast in the wrong direction. And if whoever does the work is clever — a person under pressure, or an AI — they will find the gaps you did not think to close. An unclear goal with no limits is an invitation.
+A **role assignment** identifies what fills each role: a person, team, organizational unit, machine, software system, or AI agent. No core role has to be human. One entity can fill several roles, but their responsibilities and authority remain distinct.
 
-**Ask yourself:** What am I really trying to achieve? What is out of scope? What must never happen? What am I allowed to sacrifice, and down to what level? When should this stop instead of finish?
+Ownership here is functional. The surrounding governance determines organizational accountability and any requirement for a human or organizational authority. Assigning an AI a role does not settle those wider questions.
 
----
+See [TERMS.md](./TERMS.md) for the shared definitions.
 
-## 2. Occurrence — when is it allowed to start?
+## First, ask what the work is for
 
-This is not simply "when". Four separate things must be true:
-
-- **The trigger.** The event that says "maybe now".
-- **Readiness.** The data, files, approvals, and resources that must already be there.
-- **Permission.** Who allows this to run, and is that checked at the time?
-- **The time window.** When acting is right — and when it is too early or too late.
-
-Each of these can fail on its own, and they fail differently. Not acting is one problem. Acting when you should not is another. Acting at the wrong moment is a third. Treating them as one thing hides two of them.
-
-There is also a limit worth knowing. **Your trigger must be able to tell apart every situation that needs a different answer.** If the real world produces six kinds of case and your trigger only sees "something arrived", you will handle four of them badly. This is not bad luck. It is arithmetic.
-
-**If you skip this:** the process runs on half the facts, or at the wrong moment, or does not run at all when it should — and nobody notices, because nothing visibly broke.
-
-**Ask yourself:** What starts this? What must be true and present before it is safe to act? Who says it may run? Is there a time when acting would be wrong even though the trigger fired? Can my trigger tell my cases apart?
+Before preserving the present steps, ask what outcome is needed and whether the process should exist. A precise specification of unnecessary work still specifies unnecessary work.
 
 ---
 
-## 3. Order — what has to happen before what?
+## 1. Objective — specify outcomes and limits
 
-Order is not a list of steps. It is a map of what depends on what. There are three kinds of dependency:
+State:
 
-- **One task needs something an earlier task produces.**
-- **Two tasks need the same limited thing** — a person, a machine, a budget, an API.
-- **Several tasks each build part of one thing,** and the parts have to fit together.
+- **The outcome or condition** sought, and for whom.
+- **The boundary:** what is included and excluded.
+- **The constraints:** what must not happen.
+- **The trade-offs:** which priorities may be sacrificed, and within what limits.
+- **The ending criteria:** what counts as success, partial completion, suspension, or justified termination.
 
-Write down the dependencies, not the steps. If you write every step, you lock out better ways of working and the whole thing breaks whenever something small changes.
+An objective can be assessed without being reduced to one number. Where judgment is needed, name the criteria and the role authorized to apply them.
 
-Order also decides **who does each part, and how much freedom they have.** This is not one setting for the whole system. For each step, ask four separate questions: who collects the information, who works out what it means, who decides, and who acts? A good design is often fully automatic at collecting and fully human at deciding. "Is this automated?" is the wrong question. The real answer is a grid.
+**If omitted:** different operators pursue different outcomes, or a measure rewards breaking a rule.
 
-**If you skip this:** the process breaks at the joins, not in the steps. Work starts on old data. Two jobs fight over the same resource. Two correct outputs do not fit together. And nobody owns the gap between them.
+**Ask:** Could an independent reviewer tell what success means? Which rule wins when priorities conflict? When should the process pause or end?
 
-**Ask yourself:** What truly depends on what? What could run at the same time that I am doing one after another? What does "finished" actually mean? For each step — who collects, who judges, who decides, who acts?
+## 2. Occurrence — specify conditions for activity
 
----
+Distinguish four things:
 
-## 4. Option — what happens when things go wrong?
+- **Trigger:** the event or state proposing activity.
+- **Readiness:** the information, resources, and conditions that must be present.
+- **Authorization:** the authority permitting action.
+- **Timing:** when action is appropriate, too early, too late, or no longer allowed.
 
-Things go wrong constantly. That is normal running, not a rare event.
+Then specify which conditions must remain true, and what permits continuing, suspending, resuming, and ending activity. A valid start does not authorize continuing after the conditions change.
 
-You need three kinds of answer:
+Identify situations requiring different treatment and where they are distinguished. Classification can happen after intake, provided the distinction is available before the decision depending on it.
 
-- **Other routes** to the same result.
-- **Exceptions** — what to do when reality does not match your assumptions.
-- **Recovery** — return to a safe state, pass it to someone who can help, or stop.
+**If omitted:** work starts on incomplete information, continues without permission, or misses the right moment.
 
-That last one carries the most weight. **Stopping must be a genuine option.** If your process has no way to say "not this time", it will do something wrong rather than nothing.
+**Ask:** What permits activity now? What change requires reassessment? Where are materially different situations distinguished?
 
-Then there are two rules that sound like opposites and are not.
+## 3. Order — specify dependencies and decision rights
 
-### Fail loudly
+State what depends on what:
 
-Never let the system quietly work around a problem. If it tried three times and the third worked, say so. If it fell back to a worse method and still produced something usable, say so.
+- One activity needs an output from another.
+- Several activities need the same limited resource.
+- Several outputs must fit together.
 
-Automation is very good at hiding trouble by working harder. It absorbs a growing fault so smoothly that nothing looks wrong — until it cannot absorb it any more, and by then it is too late to fix cheaply. A quiet success is not a success. It is a warning you threw away.
+Specify required sequencing, permitted concurrency, synchronization, state changes, and completion conditions. A step-by-step procedure belongs here when the method itself is required; otherwise retain freedom over method.
 
-### Hand over slowly
+Assign responsibility and discretion. Where relevant, distinguish which role gathers information, which interprets it, which decides, and which acts. Any of those roles can be filled by people, machines, or AI.
 
-When the system reaches its limit, it should step down, not drop out.
+**If omitted:** work uses stale inputs, competes for resources, produces incompatible parts, or leaves a handover without clear responsibility.
 
-Going straight from fully automatic to "here, you deal with it" hands someone a problem with no background, at the worst possible moment. Step down one level at a time. And pass on what you were trying to do, what actually happened, and what is needed now — not an error code.
+**Ask:** What must be true before what? What can happen concurrently? Who may decide and act, within what limits? What makes a handover complete?
 
-### The hard truth behind both
+## 4. Option — specify alternatives and unresolved situations
 
-**The better your automation is, the worse the people behind it become at the job it does.**
+State:
 
-They lose practice, because the system handles everything routine. They stop paying attention, because nobody can watch a system that almost never fails — human attention on a quiet screen fades after about half an hour, no matter how motivated the person is. And when it finally does fail, they are asked to do the hardest version of a task they have not done by hand in months, under time pressure.
+- **Variants:** permitted alternative routes.
+- **Exceptions:** responses when assumptions do not hold.
+- **Recovery:** routes to an acceptable state when the intended path cannot continue.
 
-So the most reliable systems need **more** training and practice for their people, not less. Build in some manual work on purpose. It feels wasteful. It is insurance.
+Name an acceptable pending state, alternative route, controlled suspension, or safe termination when no ordinary route succeeds. Doing nothing is not automatically safe: some conditions require continued activity to remain safe.
 
-**If you skip this:** the system works beautifully until the first real surprise, then hands a crisis to someone who cannot pick it up.
+Check each fallback's dependencies. A backup needing the resource that just failed is unavailable for that failure too.
 
-**Ask yourself:** What are the other routes? What happens if each dependency is not met? Does it step down or drop out? What exactly does the person see when it lands on them — and could they act on it straight away? Can this be stopped, and by whom? If it runs perfectly for a year, will anyone still know how to do it by hand?
+### Make escalation a real contract
 
----
+For every escalation, specify:
 
-## 5. Observation — how do you see what happened, and how does that change things?
+1. The condition the current operator cannot resolve.
+2. The escalation recipient, its required capability and authority, and its availability.
+3. What transfers: intended outcome, evidence, actions taken, current state, and the decision or action required.
+4. How receipt and responsibility are confirmed, within what limit.
+5. What happens if the recipient is unavailable or cannot resolve it.
 
-Observation has three duties. Most teams only do the first.
+A person may escalate to an AI specialist; an AI assessor may escalate to another AI with different permissions; a machine may transfer control to a supervisory system. Naming a different destination is not enough if it has the same unresolved limitations.
 
-- **Record.** Keep enough that you could rebuild what happened months later.
-- **Judge.** Compare what happened against what you intended, and against the goal.
-- **Change.** Have a real route by which what you learn changes the process.
+Keep transfer paths bounded. They must not become endless circles of recipients returning the same unresolved situation.
 
-Recording without judging is just storage. Judging without changing is theatre.
+### Make important deviations visible
 
-Watch three different time frames:
+Specify which substitutions, retries, and exceptions are recorded or communicated, to whom, and when. Evidence can reveal a deteriorating dependency even when the final outcome is acceptable. It does not follow that every retry needs an immediate alert.
 
-- **What is wrong right now.** Act on it today.
-- **What is slightly wrong every single time.** No single case justifies fixing it, but across a thousand runs it costs more than any incident. This one needs a redesign, not a fix.
-- **What is getting worse.** A number moving the wrong way before anything has actually broken. This is your earliest warning, and it is the one people least often build.
+**If omitted:** operators improvise without limits, work disappears into an unowned queue, or activity stops in an unacceptable state.
 
-Then look **outside** the process. The most commonly missed question is whether the world changed in a way that makes the process pointless. A process can run perfectly for a year against reasons that stopped being true.
+**Ask:** What happens when this route is unavailable? Who can actually resolve the exception? What state is maintained while waiting? What if the transfer fails?
 
-**If you skip this:** slow decay that nobody notices, because the system keeps reporting success right up until it doesn't.
+## 5. Observation — specify evidence, evaluation, and revision
 
-**Ask yourself:** Could I reconstruct one run six months from now? Am I watching all three time frames? How does a finding actually change the process, and how long does that take? Who reads this, and are they allowed to change anything? What would tell me this process should no longer exist?
+Observation has three duties:
 
----
+- **Record:** enough evidence for the declared purpose.
+- **Judge:** compare activity and outcomes with requirements.
+- **Revise:** identify how findings reach a role authorized to retain or change the requirements.
 
-# Two checks that apply to all five
+Evidence can be paper records, measurements, inspections, acknowledgments, samples, or event histories. Choose it from the questions that need answers.
 
-## Who owns it
+For recurring or continuous work, consider what is wrong now, what accumulates across executions, and what is getting worse. For a short, one-time process, completion evidence and a closeout review may suffice. Explain why a review horizon does not apply rather than inventing monitoring work.
 
-Every one of the five needs a name against it.
+Consider changes outside the process that might invalidate its assumptions. A finding can justify a change, but it does not itself grant authority to make that change.
 
-Who can change the goal? Who allows a run? Who owns each handover in the order? Who picks up an escalation — and are they actually there at three in the morning? Who reads the reports, and are they allowed to act on them?
+**If omitted:** nobody can assess what happened, or findings have no route to action.
 
-The most common real-world failure is an escalation path that ends in a queue nobody owns. An unowned gap does not stay neutral. Blame circulates around it and nothing is ever fixed. This was documented in a coal mine in 1951, and nothing about it has changed.
-
-## What it works on
-
-Name the things the process handles and the resources it uses. Without this you cannot schedule it and you cannot hand it to anyone else.
-
-One check here catches more problems than any other: **if your backup plan needs the same thing that just broke, you do not have a backup plan.** Count how many of your alternatives can fail together, not how many alternatives you have. Very often the only truly independent option is doing nothing — which is one more reason to design that option properly.
-
----
-
-# Four rules worth remembering
-
-**Say what must happen, not how.** Be exact about the result. Be loose about the method. Describing too much closes off better options and makes everything fragile. This is the answer to "how detailed should I be?"
-
-**Where a human decides, say so.** Marking the place where judgement is still needed is a result, not a failure. It tells you exactly what to build — everything around that decision, and not the decision itself.
-
-**Check that your measure does not fight your rule.** If you measure clicks but forbid exaggeration, the measurement will quietly win over time. Decide now which one takes priority, and write it down.
-
-**Deal with problems where they start.** Catching something in another team, a week later, teaches nobody anything and fixes nothing at the source.
+**Ask:** What evidence establishes satisfaction or violation? Who evaluates it? Who may revise the requirements, within what limits?
 
 ---
 
-# What this will not do for you
+## Two checks across all five
 
-**It will not tell you whether the process is worth doing.** It only forces you to ask. A process can answer all five questions perfectly and still be a waste of everyone's time.
+**Ownership and authority.** Identify who holds each responsibility, which decisions they may make, and what capability and availability the assignment requires. Keep the process owner, activity operators, and escalation recipients distinct even when one entity fills several roles.
 
-**It is not a tool or a diagram.** It tells you what must be decided, not how to write it down. Use whatever notation suits you.
+**Objects and resources.** Name what the process acts on, the states that matter, and the resources it needs or consumes. Include shared capacity, contested resources, and dependencies shared by alternative routes.
 
-**It does not replace real expertise.** Where a step is genuinely dangerous — safety, money, law — use the proper method built for it. These principles tell you that you need one.
+## How a good specification is written
 
-**It does not tell you whether people will accept it.** You can describe a process perfectly and still divide the work in a way people will not put up with. How you split control, visibility, and responsibility between people is a real design decision, and this list does not make it for you.
+- **Declare status:** observed fact, requirement, assumption, recommendation, example, or unresolved decision.
+- **Use consistent meanings:** define important terms and resolve conflicting rules.
+- **Make requirements assessable:** identify suitable evidence and evaluation criteria.
+- **Specify essential detail:** preserve freedom over method unless the method is required.
+- **Keep uncertainty visible:** say who resolves it and what must wait meanwhile.
+- **Connect the parts:** define interfaces, acceptance conditions, and responsibility at boundaries. State each rule once and reference it elsewhere.
+- **Govern changes:** identify the applicable version, change authority, and how affected roles learn of revisions.
 
----
+## Limits and the universality test
 
-# In short
+Five headings do not prove completeness, correctness, feasibility, or value. Apply the depth and domain methods appropriate to the process. Explain non-applicable requirements. Do not promise that a specification makes operators interchangeable: each implementation still needs assessment of capability, authority, interfaces, resources, and evidence.
 
-**Five questions:**
+The core framework passes two tests only when its requirements can be used unchanged to specify:
 
-1. **Objective** — What counts as success, and what are the limits?
-2. **Occurrence** — Under what conditions may it act?
-3. **Order** — What must be true before what?
-4. **Option** — What happens when reality does not cooperate?
-5. **Observation** — What does it tell you, and how does that change it?
+- A process performed entirely by people.
+- A process performed entirely by AI or machines.
 
-**Two checks:** 
-- Who owns each part? 
-- What does it work on, and what does it use?
+The role assignments and implementation details differ. The five dimensions and their meanings do not.
+
+See [the examples](./examples/README.md) for both tests in practice, and [PRINCIPLES.md](./PRINCIPLES.md) for the fuller framework and its sources.
